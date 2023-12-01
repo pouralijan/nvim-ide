@@ -54,3 +54,14 @@ keymap.set("n", "<C-n>", ":NvimTreeToggle <CR>", opts) --, "Toggle nvimtree")
 keymap.set("n", "<leader>ef", ":NvimTreeFocus <CR>", opts) --, "Focus nvimtree")
 keymap.set("n", "<leader>et", ":NvimTreeToggle<CR>", opts)
 
+-- whichkey
+--"Which-key all keymaps",
+keymap.set("n", "<leader> ", function() vim.cmd "WhichKey" end, opts)
+-- "Which-key query lookup",
+keymap.set("n", "<leader>wk",
+      function()
+        local input = vim.fn.input "WhichKey: "
+        vim.cmd("WhichKey " .. input)
+      end,
+    opts
+)
