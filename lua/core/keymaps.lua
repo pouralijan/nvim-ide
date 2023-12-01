@@ -15,8 +15,6 @@ vim.g.maplocalleader = " "
 --    command_mode = "c"
 
 -- General
--- remove it after add NVimTree
-vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
 -- Pane Navigation
 keymap.set("n", "<C-h>", "<C-w>h", opts) -- Navigate Left
 keymap.set("n", "<C-j>", "<C-w>j", opts) -- Navigate Down
@@ -47,4 +45,12 @@ keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>", opts) -- Toggle Maximize ?
 keymap.set("v", "<A-j>", ":m .+1<CR>==", opts)
 keymap.set("v", "<A-k>", ":m .-1<CR>==", opts)
 keymap.set("v", "p", '"_dP', opts)
+
+
+-- Plugins
+-- Directory Navigation
+-- nvim-tree
+keymap.set("n", "<C-n>", ":NvimTreeToggle <CR>", opts) --, "Toggle nvimtree")
+keymap.set("n", "<leader>ef", ":NvimTreeFocus <CR>", opts) --, "Focus nvimtree")
+keymap.set("n", "<leader>et", ":NvimTreeToggle<CR>", opts)
 
