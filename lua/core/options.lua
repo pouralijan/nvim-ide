@@ -38,7 +38,6 @@ opt.autochdir = false
 opt.iskeyword:append("-")
 opt.mouse = ""
 opt.clipboard:append("unnamedplus")
-opt.modifiable = true
 opt.encoding = "UTF-8"
 
 -- Other
