@@ -1,4 +1,3 @@
-print("Handlers")
 local M = {}
 
 -- TODO: backfill this to template
@@ -98,13 +97,9 @@ M.on_attach = function(client, bufnr)
   lsp_highlight_document(client)
 end
 
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-
 local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if status_ok then
   M.capabilities = cmp_nvim_lsp.default_capabilities()
-  -- M.capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 end
 
 return M

@@ -1,4 +1,3 @@
-print("Start mason configs")
 local servers = {
   "lua_ls",
 	"pyright",
@@ -31,7 +30,6 @@ end
 local opts = {}
 
 for _, server in pairs(servers) do
-  print(server)
 	opts = {
 		on_attach = require("plugins.configs.lsp.handlers").on_attach,
 		capabilities = require("plugins.configs.lsp.handlers").capabilities,
@@ -40,7 +38,6 @@ for _, server in pairs(servers) do
 	server = vim.split(server, "@")[1]
 
 	local require_ok, conf_opts = pcall(require, "plugins.configs.lsp.settings." .. server)
-  print(require_ok)
 	if require_ok then
 		opts = vim.tbl_deep_extend("force", conf_opts, opts)
 	end
