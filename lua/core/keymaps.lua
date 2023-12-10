@@ -1,4 +1,5 @@
 local keymap = vim.keymap
+local nvim_keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
 local M = {}
@@ -74,6 +75,17 @@ MyMap("n", "<leader>wk",
       end,
       {desc= "WhichKey input"}
 )
+
+-- M.comment = function ()
+--   -- Comments
+--   keymap.set("n", "<C-_>", "gcc", { noremap = false })
+--   keymap.set("v", "<C-_>", "gcc", { noremap = false })
+-- end
+-- Comments
+nvim_keymap("n", "<C-_>", "gcc", { noremap = false })
+nvim_keymap("v", "<C-_>", "gcc", { noremap = false })
+-- MyMap("n", "<C-_>", "gcc")
+-- MyMap("v", "<C-_>", "gcc")
 
 -- Telescope
 -- local telescope_builtin = require('telescope.builtin')
@@ -172,4 +184,6 @@ M.telescope = {
     ["?"] = actions.which_key,
   },
 }
+
+
 return M
