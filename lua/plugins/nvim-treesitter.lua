@@ -22,6 +22,9 @@ local options = {
     -- colors = {}, -- table of hex strings
     -- termcolors = {} -- table of colour name strings
   },
+  autopairs = {
+    enable = true,
+  },
 }
 
 return {
