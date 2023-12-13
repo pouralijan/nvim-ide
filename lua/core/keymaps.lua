@@ -55,6 +55,16 @@ MyMap("v", "<A-j>", ":m .+1<CR>==")
 MyMap("v", "<A-k>", ":m .-1<CR>==")
 MyMap("v", "p", '"_dP')
 
+-- Buffer
+MyMap("n", "<M-h>", ":bprev <CR>", {desc = "Navigate Prev Buffer"})
+MyMap("n", "<M-j>", ":bfirst <CR>", {desc = "Navigate Firest Buffer"})
+MyMap("n", "<M-k>", ":blast <CR>", {desc = "Navigate Last Buffer"})
+MyMap("n", "<M-l>", ":bnext <CR>", {desc = "Navigate Next Buffer"})
+MyMap("n", "<M-x>",function()
+    require("plugins.configs.bufferline").buf_kill("bd",nil, false)
+  end,
+  {desc = "Navigate Next Buffer"}
+)
 
 -- Plugins
 -- Directory Navigation

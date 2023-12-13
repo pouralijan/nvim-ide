@@ -27,23 +27,33 @@ local options = {
   },
 }
 
+-- this makes bug when use bufferline (when closes a buffer) I'll fix it latter.
 return {
-	"folke/which-key.nvim",
-  lazy = false,
-  opts = options,
-  -- init = function()
-  --   require("core.utils").lazy_load "nvim-treesitter"
-  -- end,
-  cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
-  build = ":TSUpdate",
-  config = function(_, opts)
-    -- dofile(vim.g.base46_cache .. "syntax")
-    require("nvim-treesitter.configs").setup(opts)
-  end,
-
-  dependencies = {
-    {
-      "p00f/nvim-ts-rainbow"
-    },
-  },
+--  "nvim-treesitter/nvim-treesitter",
+--  lazy = true,
+--  opts = options,
+--  -- init = function()
+--  --   require("core.utils").lazy_load "nvim-treesitter"
+--  -- end,
+--  build = ":TSUpdate",
+--  cmd = {
+--      "TSInstall",
+--      "TSUninstall",
+--      "TSUpdate",
+--      "TSUpdateSync",
+--      "TSInstallInfo",
+--      "TSInstallSync",
+--      "TSInstallFromGrammar",
+--    },
+--  event = "User FileOpened",
+--  config = function(_, opts)
+--    -- dofile(vim.g.base46_cache .. "syntax")
+--    require("nvim-treesitter.configs").setup(opts)
+--  end,
+--
+--  dependencies = {
+--    {
+--      "p00f/nvim-ts-rainbow"
+--    },
+--  },
 }
