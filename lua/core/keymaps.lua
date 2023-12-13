@@ -115,7 +115,7 @@ MyMap("n", "<leader>fz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", {desc
 
 -- Telescope
 -- git
-MyMap("n", "<leader>cm", "<cmd> Telescope git_commits <CR>", {desc = "Git commits" })
+MyMap("n", "<leader>cm", "<cmd> Telescope git_commits <CR>", {desc = "show Git commits" })
 MyMap("n", "<leader>gt", "<cmd> Telescope git_status <CR>", {desc = "Git status" })
 
 -- Telescope
@@ -195,5 +195,32 @@ M.telescope = {
   },
 }
 
+M.lsp_keymaps = function(buffnr)
+  local keymap = vim.keymap
+  local opts = { buffer = buffnr, noremap = true, silent = true } -- { buffer = buffnr, desc = "vim.lsp.buf.hover" }
+
+  MyMap("n", "gD", function() vim.lsp.buf.declaration() end, opts) -- "LSP declaration", },
+  keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts) --  ["gd"] = { function() vim.lsp.buf.definition() end, "LSP definition", },
+  keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)--  ["K"] = { function() vim.lsp.buf.hover() end, "LSP hover", },
+  keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)-- ["gi"] = { function() vim.lsp.buf.implementation() end, "LSP implementation", },
+  keymap.set("n", "<C-k>", function() vim.lsp.buf.signature_help() end, opts) -- ["<leader>ls"] = { function() vim.lsp.buf.signature_help() end, "LSP signature help", },
+  -- keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
+  keymap.set("n", "gr", function() vim.lsp.buf.references() end, opts)-- ["gr"] = { function() vim.lsp.buf.references() end, "LSP references", },
+  -- keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
+  -- keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts) --, "LSP code action", },
+  -- keymap.set("n", "<leader>f", function() vim.diagnostic.open_float() end, opts)
+  keymap.set("n", "gl", function() vim.diagnostic.open_float() end, opts) -- ["<leader>lf"] = { function() vim.diagnostic.open_float { border = "rounded" } end, "Floating diagnostic", },
+  keymap.set("n", "[d", function() vim.diagnostic.goto_prev({ border = "rounded" }) end, opts) -- "Goto prev", },
+  keymap.set("n", "]d", function() vim.diagnostic.goto_next({ border = "rounded" }) end, opts) -- "Goto next", },
+  keymap.set("n", "<leader>q", function() vim.diagnostic.setloclist() end, opts) -- "Diagnostic setloclist", },
+  keymap.set("n", "<leader>D", function() vim.lsp.buf.type_definition() end, opts)-- ["<leader>D"] = { function() vim.lsp.buf.type_definition() end, "LSP definition type", },
+  keymap.set("n", "<leader>wa", function() vim.lsp.buf.add_workspace_folder() end, opts) -- "Add workspace folder"
+  keymap.set("n", "<leader>wr", function() vim.lsp.buf.remove_workspace_folder() end, opts) --"Remove workspace folder"
+  keymap.set("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts) --"List workspace folders"
+
+  keymap.set("v", "<leader>ca", function() vim.lsp.buf.code_action() end, opts) --"LSP code action"
+
+  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+end
 
 return M

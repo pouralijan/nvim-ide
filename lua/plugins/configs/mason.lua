@@ -1,6 +1,7 @@
 local servers = {
   "lua_ls",
 	"pyright",
+  "clangd"
 }
 
 local settings = {
@@ -40,6 +41,7 @@ for _, server in pairs(servers) do
 	local require_ok, conf_opts = pcall(require, "plugins.configs.lsp.settings." .. server)
 	if require_ok then
 		opts = vim.tbl_deep_extend("force", conf_opts, opts)
+  else
 	end
 
 	lspconfig[server].setup(opts)
