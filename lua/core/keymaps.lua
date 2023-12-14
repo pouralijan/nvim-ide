@@ -1,10 +1,13 @@
 local keymap = vim.keymap
 local nvim_keymap = vim.api.nvim_set_keymap
-local opts = { noremap = true, silent = true }
 
 local M = {}
 
-function MyMap(mode, lhs, rhs, opts)
+local extend_table = function (table, options)
+  return vim.tbl_extend("force", table, options)
+end
+
+function MyMap(mode, lhs, rhs, desc, opts)
   -- Modes
   --    normal_mode = "n"
   --    insert_mode = "i"
@@ -14,41 +17,45 @@ function MyMap(mode, lhs, rhs, opts)
   --    command_mode = "c"
   local options = { noremap = true, silent = true }
   if opts then
-    options = vim.tbl_extend("force", options, opts)
+    options = extend_table(options, opts)
+  end
+  if desc then
+    options = extend_table(options, {desc = desc})
   end
   vim.keymap.set(mode, lhs, rhs, options)
 end
 
+
 -- Remap space as leadder key
-MyMap("", "<Space>", "Nop", opts)
+MyMap("", "<Space>", "Nop")
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- General
 -- Pane Navigation
-MyMap("n", "<C-h>", "<C-w>h", {desc = "Navigate Left Pane"})
-MyMap("n", "<C-j>", "<C-w>j", {desc = "Navigate Down Pane"})
-MyMap("n", "<C-k>", "<C-w>k", {desc = "Navigate Up Pane"})
-MyMap("n", "<C-l>", "<C-w>l", {desc = "Navigate Right Pane"})
+MyMap("n", "<C-h>", "<C-w>h", "Navigate Left Pane")
+MyMap("n", "<C-j>", "<C-w>j", "Navigate Down Pane")
+MyMap("n", "<C-k>", "<C-w>k", "Navigate Up Pane")
+MyMap("n", "<C-l>", "<C-w>l", "Navigate Right Pane")
 -- Pane Resize
-MyMap("n", "<leader>rh", ":vertical resize +2<CR>", {desc = "Resize Left"})
-MyMap("n", "<leader>rj", ":resize -2<CR>", {desc = "Resize Down"})
-MyMap("n", "<leader>rk", ":resize +2<CR>", {desc = "Resize Up"})
-MyMap("n", "<leader>rl", ":vertical resize -2<CR>", {desc = "Resize Right"})
+MyMap("n", "<leader>rh", ":vertical resize +2<CR>", "Resize Left")
+MyMap("n", "<leader>rj", ":resize -2<CR>", "Resize Down")
+MyMap("n", "<leader>rk", ":resize +2<CR>", "Resize Up")
+MyMap("n", "<leader>rl", ":vertical resize -2<CR>", "Resize Right")
 
-MyMap("n", "<C-Left>", ":vertical resize +2<CR>", {desc = "Resize Left"})
-MyMap("n", "<C-Down>", ":resize -2<CR>", {desc = "Resize Down"})
-MyMap("n", "<C-UP>", ":resize +2<CR>", {desc = "Resize Up"})
-MyMap("n", "<C-Right>", ":vertical resize -2<CR>", {desc = "Resize Right"})
+MyMap("n", "<C-Left>", ":vertical resize +2<CR>", "Resize Left")
+MyMap("n", "<C-Down>", ":resize -2<CR>", "Resize Down")
+MyMap("n", "<C-UP>", ":resize +2<CR>", "Resize Up")
+MyMap("n", "<C-Right>", ":vertical resize -2<CR>", "Resize Right")
 
 -- Indenting
 MyMap("v", "<", "<gv")
 MyMap("v", ">", ">gv")
 
 -- Window Management
-MyMap("n", "<leader>sv", ":vsplit<CR>",          {desc = "Split Vertically"})
-MyMap("n", "<leader>sh", ":split<CR>",           {desc = "Split Horizontally"})
-MyMap("n", "<leader>sm", ":MaximizerToggle<CR>", {desc = "Toggle Maximize ???"})
+MyMap("n", "<leader>sv", ":vsplit<CR>", "Split Vertically")
+MyMap("n", "<leader>sh", ":split<CR>", "Split Horizontally")
+MyMap("n", "<leader>sm", ":MaximizerToggle<CR>", "Toggle Maximize ???")
 
 -- Move text up and down
 MyMap("v", "<A-j>", ":m .+1<CR>==")
@@ -56,21 +63,21 @@ MyMap("v", "<A-k>", ":m .-1<CR>==")
 MyMap("v", "p", '"_dP')
 
 -- Buffer
-MyMap("n", "<M-h>", ":bprev <CR>", {desc = "Navigate Prev Buffer"})
-MyMap("n", "<M-j>", ":bfirst <CR>", {desc = "Navigate Firest Buffer"})
-MyMap("n", "<M-k>", ":blast <CR>", {desc = "Navigate Last Buffer"})
-MyMap("n", "<M-l>", ":bnext <CR>", {desc = "Navigate Next Buffer"})
+MyMap("n", "<M-h>", ":bprev <CR>", "Navigate Prev Buffer")
+MyMap("n", "<M-j>", ":bfirst <CR>", "Navigate Firest Buffer")
+MyMap("n", "<M-k>", ":blast <CR>", "Navigate Last Buffer")
+MyMap("n", "<M-l>", ":bnext <CR>", "Navigate Next Buffer")
 MyMap("n", "<M-x>",function()
     require("plugins.configs.bufferline").buf_kill("bd",nil, false)
   end,
-  {desc = "Navigate Next Buffer"}
+  "Navigate Next Buffer"
 )
 
 -- Plugins
 -- Directory Navigation
 -- nvim-tree
-MyMap("n", "<C-n>", ":NvimTreeToggle <CR>") --, "Toggle nvimtree")
-MyMap("n", "<leader>e", ":NvimTreeFocus <CR>") --, "Focus nvimtree")
+MyMap("n", "<C-n>", ":NvimTreeToggle <CR>" , "Toggle nvimtree")
+MyMap("n", "<leader>e", ":NvimTreeFocus <CR>", "Focus nvimtree")
 MyMap("n", "<leader>et", ":NvimTreeToggle<CR>")
 
 -- whichkey
@@ -83,7 +90,7 @@ MyMap("n", "<leader>wk",
         local input = vim.fn.input "WhichKey: "
         vim.cmd("WhichKey " .. input)
       end,
-      {desc= "WhichKey input"}
+      "WhichKey input"
 )
 
 -- M.comment = function ()
@@ -92,41 +99,40 @@ MyMap("n", "<leader>wk",
 --   keymap.set("v", "<C-_>", "gcc", { noremap = false })
 -- end
 -- Comments
-nvim_keymap("n", "<C-_>", "gcc", { noremap = false })
-nvim_keymap("v", "<C-_>", "gcc", { noremap = false })
+nvim_keymap("n", "<C-_>", "gcc",  { noremap = false })
+nvim_keymap("v", "<C-_>", "gcc",  { noremap = false })
 -- MyMap("n", "<C-_>", "gcc")
 -- MyMap("v", "<C-_>", "gcc")
 
 -- Telescope
 -- local telescope_builtin = require('telescope.builtin')
-MyMap("n", "<leader>fa", ":Telescope")
+MyMap("n", "<leader>ta", ":Telescope")
 -- MyMap("n", "<leader>fk", telescope_builtin.keymaps)
-MyMap("n", "<leader>fh", ":Telescope help_tags<CR>")
+MyMap("n", "<leader>th", ":Telescope help_tags<CR>")
 -- Telescope
 -- find
-MyMap("n", "<leader>ff", "<cmd> Telescope find_files <CR>", {desc = "Find files" })
-MyMap("n", "<leader>fs", "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", {desc = "Find all" })
-MyMap("n", "<leader>fw", "<cmd> Telescope live_grep <CR>", {desc = "Live grep" })
-MyMap("n", "<leader>lg", ":Telescope live_grep<CR>")
-MyMap("n", "<leader>fb", "<cmd> Telescope buffers <CR>", {desc = "Find buffers" })
-MyMap("n", "<leader>fh", "<cmd> Telescope help_tags <CR>", {desc = "Help page" })
-MyMap("n", "<leader>fo", "<cmd> Telescope oldfiles <CR>", {desc = "Find oldfiles" })
-MyMap("n", "<leader>fz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", {desc = "Find in current buffer" })
+MyMap("n", "<leader>tf", "<cmd> Telescope find_files <CR>", "Find files")
+MyMap("n", "<leader>ts", "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all")
+MyMap("n", "<leader>tl", "<cmd> Telescope live_grep <CR>", "Live grep")
+MyMap("n", "<leader>tb", "<cmd> Telescope buffers <CR>", "Find buffers")
+MyMap("n", "<leader>th", "<cmd> Telescope help_tags <CR>", "Help page")
+MyMap("n", "<leader>to", "<cmd> Telescope oldfiles <CR>", "Find oldfiles")
+MyMap("n", "<leader>tz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer")
 
 -- Telescope
 -- git
-MyMap("n", "<leader>cm", "<cmd> Telescope git_commits <CR>", {desc = "show Git commits" })
-MyMap("n", "<leader>gt", "<cmd> Telescope git_status <CR>", {desc = "Git status" })
+MyMap("n", "<leader>tgm", "<cmd> Telescope git_commits <CR>", "show Git commits")
+MyMap("n", "<leader>tgt", "<cmd> Telescope git_status <CR>", "Git status")
 
 -- Telescope
 -- pick a hidden term
-MyMap("n", "<leader>pt", "<cmd> Telescope terms <CR>", {desc = "Pick hidden term" })
+MyMap("n", "<leader>tt", "<cmd> Telescope terms <CR>", "Pick hidden term")
 
 -- Telescope
 -- theme switcher
-MyMap("n", "<leader>th", "<cmd> Telescope themes <CR>", {desc = "Nvchad themes" })
+MyMap("n", "<leader>ttc", "<cmd> Telescope themes <CR>", "Telescope themes")
 
-MyMap("n", "<leader>ma", "<cmd> Telescope marks <CR>", {desc = "telescope bookmarks" })
+MyMap("n", "<leader>tm", "<cmd> Telescope marks <CR>", "Telescope bookmarks")
 
 local actions = require "telescope.actions"
 
@@ -195,32 +201,32 @@ M.telescope = {
   },
 }
 
+
 M.lsp_keymaps = function(buffnr)
-  local keymap = vim.keymap
-  local opts = { buffer = buffnr, noremap = true, silent = true } -- { buffer = buffnr, desc = "vim.lsp.buf.hover" }
+  print("LSP keymap")
+  local keymap_option = {buffer = buffnr}
 
-  MyMap("n", "gD", function() vim.lsp.buf.declaration() end, opts) -- "LSP declaration", },
-  keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts) --  ["gd"] = { function() vim.lsp.buf.definition() end, "LSP definition", },
-  keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)--  ["K"] = { function() vim.lsp.buf.hover() end, "LSP hover", },
-  keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)-- ["gi"] = { function() vim.lsp.buf.implementation() end, "LSP implementation", },
-  keymap.set("n", "<C-k>", function() vim.lsp.buf.signature_help() end, opts) -- ["<leader>ls"] = { function() vim.lsp.buf.signature_help() end, "LSP signature help", },
-  -- keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
-  keymap.set("n", "gr", function() vim.lsp.buf.references() end, opts)-- ["gr"] = { function() vim.lsp.buf.references() end, "LSP references", },
-  -- keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
-  -- keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts) --, "LSP code action", },
-  -- keymap.set("n", "<leader>f", function() vim.diagnostic.open_float() end, opts)
-  keymap.set("n", "gl", function() vim.diagnostic.open_float() end, opts) -- ["<leader>lf"] = { function() vim.diagnostic.open_float { border = "rounded" } end, "Floating diagnostic", },
-  keymap.set("n", "[d", function() vim.diagnostic.goto_prev({ border = "rounded" }) end, opts) -- "Goto prev", },
-  keymap.set("n", "]d", function() vim.diagnostic.goto_next({ border = "rounded" }) end, opts) -- "Goto next", },
-  keymap.set("n", "<leader>q", function() vim.diagnostic.setloclist() end, opts) -- "Diagnostic setloclist", },
-  keymap.set("n", "<leader>D", function() vim.lsp.buf.type_definition() end, opts)-- ["<leader>D"] = { function() vim.lsp.buf.type_definition() end, "LSP definition type", },
-  keymap.set("n", "<leader>wa", function() vim.lsp.buf.add_workspace_folder() end, opts) -- "Add workspace folder"
-  keymap.set("n", "<leader>wr", function() vim.lsp.buf.remove_workspace_folder() end, opts) --"Remove workspace folder"
-  keymap.set("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts) --"List workspace folders"
-
-  keymap.set("v", "<leader>ca", function() vim.lsp.buf.code_action() end, opts) --"LSP code action"
+  MyMap("n", "gD", function() vim.lsp.buf.declaration() end, "LSP declaration", keymap_option)
+  MyMap("n", "gd", function() vim.lsp.buf.definition() end, "LSP definition", keymap_option)
+  MyMap("n", "K", function() vim.lsp.buf.hover() end, "LSP hover", keymap_option)
+  MyMap("n", "gi", function() vim.lsp.buf.implementation() end,"LSP implementation", keymap_option)
+  MyMap("n", "<C-k>", function() vim.lsp.buf.signature_help() end, "LSP signature help", keymap_option)
+  MyMap("n", "<leader>rn", function() vim.lsp.buf.rename() end, "LSP rename buffer", keymap_option)
+  MyMap("n", "gr", function() vim.lsp.buf.references() end, "LSP references", keymap_option)
+  MyMap("n", "<leader>ca", function() vim.lsp.buf.code_action() end, "LSP code action", keymap_option)
+  MyMap("n", "<leader>fx", function() vim.diagnostic.open_float() end, "Open Floating", keymap_option)
+  MyMap("n", "gl", function() vim.diagnostic.open_float() end, "Floating diagnostic", keymap_option)
+  MyMap("n", "[d", function() vim.diagnostic.goto_prev({ border = "rounded" }) end, "Goto prev", keymap_option)
+  MyMap("n", "]d", function() vim.diagnostic.goto_next({ border = "rounded" }) end, "Goto next", keymap_option)
+  MyMap("n", "<leader>q", function() vim.diagnostic.setloclist() end, "Diagnostic setloclist", keymap_option)
+  MyMap("n", "<leader>D", function() vim.lsp.buf.type_definition() end, "LSP definition type", keymap_option)
+  MyMap("n", "<leader>wa", function() vim.lsp.buf.add_workspace_folder() end, "Add workspace folder", keymap_option)
+  MyMap("n", "<leader>wr", function() vim.lsp.buf.remove_workspace_folder() end, "Remove workspace folder", keymap_option)
+  MyMap("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "List workspace folders", keymap_option)
+  MyMap("v", "<leader>ca", function() vim.lsp.buf.code_action() end, "LSP code action", keymap_option)
 
   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+  print("LSP keymap end")
 end
 
 return M
