@@ -1,4 +1,3 @@
-local keymap = vim.keymap
 local nvim_keymap = vim.api.nvim_set_keymap
 
 local M = {}
@@ -76,7 +75,7 @@ MyMap("n", "<M-x>",function()
 -- Plugins
 -- Directory Navigation
 -- nvim-tree
-MyMap("n", "<C-n>", ":NvimTreeToggle <CR>" , "Toggle nvimtree")
+MyMap("n", "<C-e>", ":NvimTreeToggle <CR>" , "Toggle nvimtree")
 MyMap("n", "<leader>e", ":NvimTreeFocus <CR>", "Focus nvimtree")
 MyMap("n", "<leader>et", ":NvimTreeToggle<CR>")
 
@@ -124,9 +123,18 @@ MyMap("n", "<leader>tz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find
 MyMap("n", "<leader>tgm", "<cmd> Telescope git_commits <CR>", "show Git commits")
 MyMap("n", "<leader>tgt", "<cmd> Telescope git_status <CR>", "Git status")
 
+MyMap("n", "<leader>tgl",
+  function ()
+    local Terminal  = require('toggleterm.terminal').Terminal
+    local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+    lazygit:toggle()
+    end
+, "Lazy Git")
+
+
 -- Telescope
 -- pick a hidden term
-MyMap("n", "<leader>tt", "<cmd> Telescope terms <CR>", "Pick hidden term")
+MyMap("n", "<leader>tt", "<cmd> Telescope toggleterm_manager <CR>", "Pick hidden term")
 
 -- Telescope
 -- theme switcher
