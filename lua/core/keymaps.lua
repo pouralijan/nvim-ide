@@ -72,6 +72,10 @@ MyMap("n", "<M-x>",function()
   "Navigate Next Buffer"
 )
 
+-- more good
+MyMap({"n", "o", "x"}, "<s-h>", "^", "Move end of line")
+MyMap({"n", "o", "x"}, "<s-l>", "g_", "Move start of line")
+
 -- Plugins
 -- Directory Navigation
 -- nvim-tree
