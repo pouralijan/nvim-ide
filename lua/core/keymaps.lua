@@ -76,11 +76,15 @@ MyMap({ "n", "o", "x" }, "<s-h>", "^", "Move end of line")
 MyMap({ "n", "o", "x" }, "<s-l>", "g_", "Move start of line")
 
 -- Plugins
+
+MyMap("n", "<leader>vp", function()
+	require("swenv.api").pick_venv()
+end, "Pick python virtual env")
 -- Directory Navigation
--- nvim-tree
-MyMap("n", "<C-e>", ":NvimTreeToggle <CR>", "Toggle nvimtree")
-MyMap("n", "<leader>e", ":NvimTreeFocus <CR>", "Focus nvimtree")
-MyMap("n", "<leader>et", ":NvimTreeToggle<CR>")
+-- neo-tree
+MyMap("n", "<C-e>", ":Neotree toggle<CR>", "Toggle nvimtree")
+MyMap("n", "<leader>e", ":Neotree focus<CR>", "Focus nvimtree")
+MyMap("n", "<leader>et", ":Neotree toggle<CR>")
 
 -- whichkey
 --"Which-key all keymaps",
