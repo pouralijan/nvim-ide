@@ -1,4 +1,7 @@
 local opt = vim.opt
+local cmd = vim.cmd
+
+cmd("filetype plugin on")
 
 -- Tap / Indentation
 opt.tabstop = 2
@@ -17,12 +20,11 @@ opt.hlsearch = true
 opt.relativenumber = true
 opt.termguicolors = true
 
-opt.colorcolumn = '80,100,120'
-opt.signcolumn = 'yes'
+opt.colorcolumn = "80,100,120"
+opt.signcolumn = "yes"
 opt.cmdheight = 2
 opt.scrolloff = 10
 opt.completeopt = { "menuone", "noinsert", "noselect" }
-
 
 -- Behaviour
 opt.hidden = true
