@@ -40,3 +40,5 @@ luac.out
 *.hex
 
 lazy-lock.json
+lua/current-theme.lua
+lua/.luarc.json
