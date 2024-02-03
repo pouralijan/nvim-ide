@@ -77,6 +77,9 @@ MyMap({ "n", "o", "x" }, "<s-l>", "g_", "Move start of line")
 
 -- Plugins
 
+-- AutoFormat
+MyMap("n", "<leader>af", ":FormatWrite", "Auto Formate")
+
 MyMap("n", "<leader>vp", function()
 	require("swenv.api").pick_venv()
 end, "Pick python virtual env")
