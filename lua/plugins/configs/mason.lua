@@ -1,16 +1,19 @@
 local servers = {
-  "lua_ls",
+	"lua_ls",
 	"pyright",
-  "clangd"
+	"clangd",
+	"rust-analyzer",
+	"bashls",
+	"dartls",
 }
 
 local settings = {
 	ui = {
 		border = "none",
 		icons = {
-      package_pending = " ",
-      package_installed = "󰄳 ",
-      package_uninstalled = " 󰚌",
+			package_pending = " ",
+			package_installed = "󰄳 ",
+			package_uninstalled = " 󰚌",
 		},
 	},
 	log_level = vim.log.levels.INFO,
@@ -32,7 +35,8 @@ local opts = {}
 
 for _, server in pairs(servers) do
 	opts = {
-		on_attach = require("plugins.configs.lsp.handlers").on_attach,
+		-- on_attach = require("plugins.configs.lsp.handlers").on_attach,
+		on_attach = require("core.keymaps").lsp_keymaps,
 		capabilities = require("plugins.configs.lsp.handlers").capabilities,
 	}
 
@@ -41,8 +45,8 @@ for _, server in pairs(servers) do
 	local require_ok, conf_opts = pcall(require, "plugins.configs.lsp.settings." .. server)
 	if require_ok then
 		opts = vim.tbl_deep_extend("force", conf_opts, opts)
-  else
 	end
 
+	server = server:gsub("-", "_")
 	lspconfig[server].setup(opts)
 end
