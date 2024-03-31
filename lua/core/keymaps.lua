@@ -24,6 +24,18 @@ local MyMap = function(mode, lhs, rhs, desc, opts)
 	vim.keymap.set(mode, lhs, rhs, options)
 end
 
+M.load_mapping = function(keymap_table)
+	--
+	for mode, mode_value in pairs(keymap_table) do
+		for keybind, mapping_info in pairs(mode_value) do
+			local action = mapping_info[1] or {}
+			local desc = mapping_info[2] or {}
+			local opts = mapping_info[3] or {}
+			MyMap(mode, keybind, action, desc, opts)
+		end
+	end
+end
+
 M.MyMap = MyMap
 
 -- Remap space as leadder key
@@ -63,13 +75,13 @@ MyMap("v", "<A-k>", ":m .-1<CR>==")
 MyMap("v", "p", '"_dP')
 
 -- Buffer
+MyMap("n", "gT", ":bprev <CR>", "Navigate Prev Buffer")
 MyMap("n", "<M-h>", ":bprev <CR>", "Navigate Prev Buffer")
 MyMap("n", "<M-j>", ":bfirst <CR>", "Navigate Firest Buffer")
 MyMap("n", "<M-k>", ":blast <CR>", "Navigate Last Buffer")
 MyMap("n", "<M-l>", ":bnext <CR>", "Navigate Next Buffer")
-MyMap("n", "<M-x>", function()
-	require("plugins.configs.bufferline").buf_kill("bd", nil, false)
-end, "Navigate Next Buffer")
+MyMap("n", "gt", ":bnext <CR>", "Navigate Next Buffer")
+MyMap("n", "<M-x>", ":bd <CR>", "Kill cueernt Buffer")
 
 -- more good
 MyMap({ "n", "o", "x" }, "<s-h>", "^", "Move end of line")
@@ -78,8 +90,9 @@ MyMap({ "n", "o", "x" }, "<s-l>", "g_", "Move start of line")
 -- Plugins
 
 -- AutoFormat
-MyMap("n", "<leader>af", ":FormatWrite", "Auto Formate")
+MyMap("n", "<leader>af", ":FormatWrite<CR>", "Auto Formate")
 
+-- ???
 MyMap("n", "<leader>vp", function()
 	require("swenv.api").pick_venv()
 end, "Pick python virtual env")
@@ -114,6 +127,26 @@ nvim_keymap("v", "<C-_>", "gcc", { noremap = false })
 -- MyMap("n", "<C-_>", "gcc")
 -- MyMap("v", "<C-_>", "gcc")
 
+-- Trouble
+MyMap("n", "<leader>xx", function()
+	require("trouble").toggle()
+end, "Troble toggle")
+MyMap("n", "<leader>xw", function()
+	require("trouble").toggle("workspace_diagnostics")
+end, "Troble workspace diagnostics")
+MyMap("n", "<leader>xd", function()
+	require("trouble").toggle("document_diagnostics")
+end, "Troble document diagnostics")
+MyMap("n", "<leader>xq", function()
+	require("trouble").toggle("quickfix")
+end, "Troble quickfix")
+MyMap("n", "<leader>xl", function()
+	require("trouble").toggle("loclist")
+end, "Troble loclist")
+MyMap("n", "gr", function()
+	require("trouble").toggle("lsp_references")
+end, "Troble lsp_references")
+
 -- Telescope
 -- local telescope_builtin = require('telescope.builtin')
 MyMap("n", "<leader>ta", ":Telescope")
@@ -131,14 +164,25 @@ MyMap("n", "<leader>tz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find
 
 -- Telescope
 -- git
-MyMap("n", "<leader>tgm", "<cmd> Telescope git_commits <CR>", "show Git commits")
-MyMap("n", "<leader>tgt", "<cmd> Telescope git_status <CR>", "Git status")
+MyMap("n", "<leader>gm", "<cmd> Telescope git_commits <CR>", "show Git commits")
+MyMap("n", "<leader>gt", "<cmd> Telescope git_status <CR>", "Git status")
 
-MyMap("n", "<leader>tgl", function()
+MyMap("n", "<leader>gl", function()
 	local Terminal = require("toggleterm.terminal").Terminal
 	local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 	lazygit:toggle()
 end, "Lazy Git")
+
+MyMap("n", "<leader>ghp", "<cmd> Gitsigns preview_hunk <CR>", "Git preview hunk")
+MyMap("n", "<leader>gh", "<cmd> Gitsigns preview_hunk_inline <CR>", "Git preview hunk inline")
+MyMap("n", "<leader>gn", "<cmd> Gitsigns next_hunk <CR>", "Git next_hunk")
+MyMap("n", "<leader>gp", "<cmd> Gitsigns prev_hunk <CR>", "Git prev_hunk")
+MyMap("n", "<leader>gtl", "<cmd> Gitsigns toggle_linehl<CR>", "Git toggleline hilight")
+MyMap("n", "<leader>gtw", "<cmd> Gitsigns toggle_word_diff<CR>", "Git toggle word diff")
+MyMap("n", "<leader>gtn", "<cmd> Gitsigns toggle_numhl<CR>", "Git toggle number hilight ")
+
+MyMap("n", "<leader>dgl", "<cmd> diffget LO<CR>", "Diff get local")
+MyMap("n", "<leader>dgr", "<cmd> diffget RE<CR>", "Diff get remote")
 
 -- Telescope
 -- pick a hidden term
@@ -217,9 +261,8 @@ M.telescope = {
 	},
 }
 
-M.lsp_keymaps = function(buffnr)
-	print("LSP keymap")
-	local keymap_option = { buffer = buffnr }
+M.lsp_keymaps = function(client, bufnr)
+	local keymap_option = { bufnr = bufnr }
 
 	MyMap("n", "gD", function()
 		vim.lsp.buf.declaration()
@@ -239,9 +282,6 @@ M.lsp_keymaps = function(buffnr)
 	MyMap("n", "<leader>rn", function()
 		vim.lsp.buf.rename()
 	end, "LSP rename buffer", keymap_option)
-	MyMap("n", "gr", function()
-		vim.lsp.buf.references()
-	end, "LSP references", keymap_option)
 	MyMap("n", "<leader>ca", function()
 		vim.lsp.buf.code_action()
 	end, "LSP code action", keymap_option)
@@ -260,7 +300,7 @@ M.lsp_keymaps = function(buffnr)
 	MyMap("n", "<leader>q", function()
 		vim.diagnostic.setloclist()
 	end, "Diagnostic setloclist", keymap_option)
-	MyMap("n", "<leader>D", function()
+	MyMap("n", "<leader>lD", function()
 		vim.lsp.buf.type_definition()
 	end, "LSP definition type", keymap_option)
 	MyMap("n", "<leader>wa", function()
@@ -277,7 +317,34 @@ M.lsp_keymaps = function(buffnr)
 	end, "LSP code action", keymap_option)
 
 	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
-	print("LSP keymap end")
 end
+
+-- DAP
+M.dap = {
+	n = {
+		["<leader>db"] = {
+			"<cmd>:DapToggleBreakpoint <CR>",
+			"Add breakpoing at line",
+		},
+		["<F5>"] = {
+			function()
+				local dap_projects = require("nvim-dap-projects")
+
+				dap_projects.search_project_config()
+				local dap = require("dap")
+				dap.continue()
+			end,
+			"Start or continue the debuger",
+		},
+		["<F10>"] = {
+			"<cmd>DapStepOver <CR>",
+			"DAP Stop Over",
+		},
+		["<F11>"] = {
+			"<cmd>DapStepInto <CR>",
+			"DAP Stop Into",
+		},
+	},
+}
 
 return M
