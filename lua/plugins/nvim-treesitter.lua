@@ -4,6 +4,8 @@ local options = {
 		"python",
 		"rust",
 		"cpp",
+		"dart",
+		"bash",
 	},
 	sync_install = false,
 	additional_vim_regex_highlighting = true,
