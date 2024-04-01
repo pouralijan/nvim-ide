@@ -59,7 +59,13 @@ local sections = {
 }
 local tabline = {
 	lualine_a = { { "hostname", separator = { left = "" }, right_padding = 2 } },
-	lualine_b = { "filename" },
+	lualine_b = {
+		{
+			"filename",
+			file_status = true, -- displays file status (readonly status, modified status)
+			path = 2, -- 0 = just filename, 1 = relative path, 2 = absolute path},
+		},
+	},
 	lualine_c = {},
 	lualine_x = {},
 	lualine_y = {
