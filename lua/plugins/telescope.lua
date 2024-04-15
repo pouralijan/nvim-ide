@@ -1,7 +1,7 @@
 local options = function()
 	return {
 		defaults = {
-			keymaps = require("core.keymaps").telescope,
+			-- keymaps = require("core.keymaps").telescope,
 			vimgrep_arguments = {
 				"rg",
 				"-L",
