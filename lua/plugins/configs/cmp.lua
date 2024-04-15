@@ -105,6 +105,7 @@ local options = {
 				nvim_lsp = "[LSP]",
 				nvim_lua = "[NVIM_LUA]",
 				luasnip = "[Snippet]",
+				crates = "[crates]",
 				buffer = "[Buffer]",
 				path = "[Path]",
 			})[entry.source.name]
@@ -118,6 +119,7 @@ local options = {
 		{ name = "buffer" },
 		{ name = "path" },
 		{ name = "crates" },
+		{ name = "taplo" },
 	},
 	confirm_opts = {
 		behavior = cmp.ConfirmBehavior.Replace,
