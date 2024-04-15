@@ -267,15 +267,17 @@ M.telescope = {
 	},
 }
 
-M.lsp_keymaps = function(client, bufnr)
-	local keymap_option = { bufnr = bufnr }
-
+function M.lsp_keymaps(client, bufnr)
+	local keymap_option = { noremap = true, silent = true, buffer = bufnr }
 	MyMap("n", "gD", function()
 		vim.lsp.buf.declaration()
 	end, "LSP declaration", keymap_option)
 	MyMap("n", "gd", function()
 		vim.lsp.buf.definition()
 	end, "LSP definition", keymap_option)
+	MyMap("n", "<leader>lD", function()
+		vim.lsp.buf.type_definition()
+	end, "LSP definition type", keymap_option)
 	MyMap("n", "K", function()
 		vim.lsp.buf.hover()
 	end, "LSP hover", keymap_option)
@@ -306,9 +308,6 @@ M.lsp_keymaps = function(client, bufnr)
 	MyMap("n", "<leader>q", function()
 		vim.diagnostic.setloclist()
 	end, "Diagnostic setloclist", keymap_option)
-	MyMap("n", "<leader>lD", function()
-		vim.lsp.buf.type_definition()
-	end, "LSP definition type", keymap_option)
 	MyMap("n", "<leader>wa", function()
 		vim.lsp.buf.add_workspace_folder()
 	end, "Add workspace folder", keymap_option)
