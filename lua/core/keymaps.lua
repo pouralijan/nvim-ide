@@ -194,6 +194,12 @@ MyMap("n", "<leader>ttc", "<cmd> Telescope themes <CR>", "Telescope themes")
 
 MyMap("n", "<leader>tm", "<cmd> Telescope marks <CR>", "Telescope bookmarks")
 
+-- Telescope
+-- Notify
+MyMap("n", "<leader>tn", function()
+	require("telescope").extensions.notify.notify()
+end, "Notifications list")
+
 local actions = require("telescope.actions")
 
 M.telescope = {
