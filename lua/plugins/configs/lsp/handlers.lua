@@ -63,10 +63,9 @@ end
 M.on_attach = function(client, bufnr)
 	-- client.server_capabilities.documentFormattingProvider = false
 	-- client.server_capabilities.documentRangeFormattingProvider = false
-
 	-- lsp_keymaps(bufnr)
-	require("core.keymaps").lsp_keymaps(client, bufnr)
 	-- lsp_highlight_document(client)
+	return require("core.keymaps").lsp_keymaps(client, bufnr)
 end
 
 -- M.capabilities = {}
