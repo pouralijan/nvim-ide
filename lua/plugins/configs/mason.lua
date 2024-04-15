@@ -2,9 +2,12 @@ local servers = {
 	"lua_ls",
 	"pyright",
 	"clangd",
-	"rust-analyzer",
+	"rust_analyzer",
 	"bashls",
-	"dartls",
+	"taplo",
+	"cmake",
+	"jqls",
+	"jsonls",
 }
 
 local settings = {
@@ -46,7 +49,6 @@ for _, server in pairs(servers) do
 	if require_ok then
 		opts = vim.tbl_deep_extend("force", conf_opts, opts)
 	end
-
-	server = server:gsub("-", "_")
+	-- server = server:gsub("-", "_")
 	lspconfig[server].setup(opts)
 end
