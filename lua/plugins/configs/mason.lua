@@ -8,6 +8,7 @@ local servers = {
 	"cmake",
 	"jqls",
 	"jsonls",
+	"tsserver",
 }
 
 local settings = {
