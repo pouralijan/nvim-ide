@@ -1,5 +1,6 @@
 local options = {
 	ensure_installed = {
+<<<<<<< HEAD
 		"lua",
 		"python",
 		"rust",
@@ -13,6 +14,30 @@ local options = {
 		"markdown",
 		"markdown_inline",
 		"query",
+=======
+		"bash",
+		"c",
+		"cpp",
+		"css",
+		"dart",
+		"dockerfile",
+		"gitignore",
+		"html",
+		"json",
+		"javascript",
+		"lua",
+		"markdown",
+		"markdown",
+		"markdown_inline",
+		"python",
+		"query",
+		"rust",
+		"tsx",
+		"typescript",
+		"vim",
+		"vimdoc",
+		"yaml",
+>>>>>>> e180cb57997513eda96a54fe8b7a83c6457e839e
 	},
 	sync_install = false,
 	additional_vim_regex_highlighting = true,
@@ -34,6 +59,15 @@ local options = {
 	autopairs = {
 		enable = true,
 	},
+	incremental_selection = {
+		enable = true,
+		-- keymaps = {
+		-- 	init_selection = "<C-space>",
+		-- 	node_incremental = "<C-space>",
+		-- 	scop_incremental = "<C-space>",
+		-- 	node_decremental = "<bs>",
+		-- },
+	},
 }
 
 -- this makes bug when use bufferline (when closes a buffer) I'll fix it latter.
@@ -50,7 +84,8 @@ return {
 		"TSInstallSync",
 		"TSInstallFromGrammar",
 	},
-	event = "User FileOpened",
+	event = { "User FileOpened", "BufReadPre", "BufNewFile" },
+	dependencies = { "windwp/nvim-ts-autotag" },
 	config = function(_, opts)
 		require("nvim-treesitter.configs").setup(opts)
 	end,
