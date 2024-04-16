@@ -2,12 +2,13 @@ local opt = vim.opt
 local cmd = vim.cmd
 
 cmd("filetype plugin on")
-
+cmd("let g:netrw_liststyle = 3") -- set default vim file explorer as tree view
 -- Tap / Indentation
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.softtabstop = 2
 opt.expandtab = true
+opt.autoindent = true
 opt.smartindent = true
 opt.wrap = false
 
@@ -18,10 +19,13 @@ opt.hlsearch = true
 
 -- Appearance
 opt.relativenumber = true
-opt.termguicolors = true
+opt.cursorline = true
+opt.number = true
 
 opt.colorcolumn = "80,100,120"
+opt.termguicolors = true
 opt.signcolumn = "yes"
+opt.background = "dark"
 opt.cmdheight = 2
 opt.scrolloff = 10
 opt.completeopt = { "menuone", "noinsert", "noselect" }
@@ -52,7 +56,5 @@ opt.smartcase = true
 opt.timeoutlen = 1000
 opt.updatetime = 300
 opt.writebackup = false
-opt.cursorline = true
-opt.number = true
 opt.numberwidth = 4
 opt.sidescrolloff = 8
