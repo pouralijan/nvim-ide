@@ -24,6 +24,8 @@ local options = {
 	component_separators = "",
 	section_separators = { left = "", right = "" },
 }
+
+local lazy_status = require("lazy.status")
 local sections = {
 	lualine_a = {
 		{
@@ -47,7 +49,7 @@ local sections = {
 		},
 	},
 	lualine_c = {},
-	lualine_x = {},
+	lualine_x = { { lazy_status.updates, cond = lazy_status.has_updates, color = { fg = "#ff9e64" } } },
 	lualine_y = {
 		{ "filesize" },
 		{ "filetype" },
