@@ -65,7 +65,7 @@ local options = function()
 			},
 		},
 
-		extensions_list = { "themes", "fzf", "media_files", "bookmarks" },
+		extensions_list = { "themes", "fzf", "media_files", "bookmarks", "rest", "flutter" },
 		extensions = {
 			media_files = {
 				-- filetypes whitelist

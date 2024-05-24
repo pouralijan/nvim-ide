@@ -48,6 +48,15 @@ return {
 		sh = {
 			require("formatter.filetypes.sh").shfmt,
 		},
+		javascript = {
+			require("formatter.filetypes.javascript").prettier,
+		},
+		typescript = {
+			require("formatter.filetypes.typescript").prettier,
+		},
+		latex = {
+			require("formatter.filetypes.latex").latexindent,
+		},
 		["*"] = {
 			util.copyf(defaults.prettier),
 		},

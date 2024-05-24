@@ -88,6 +88,12 @@ MyMap({ "n", "o", "x" }, "<s-h>", "^", "Move end of line")
 MyMap({ "n", "o", "x" }, "<s-l>", "g_", "Move start of line")
 
 -- Plugins
+--
+
+-- Flutter Tools
+MyMap("n", "<leader>ff", function()
+	require("telescope").extensions.flutter.commands()
+end, "Open Telescope Flutter's commands ")
 
 -- AutoFormat
 MyMap("n", "<leader>af", ":FormatWrite<CR>", "Auto Formate")
@@ -199,6 +205,12 @@ MyMap("n", "<leader>tm", "<cmd> Telescope bookmarks list <CR>", "Telescope bookm
 MyMap("n", "<leader>tn", function()
 	require("telescope").extensions.notify.notify()
 end, "Notifications list")
+
+-- Telescope
+-- Rest
+MyMap("n", "<leader>re", function()
+	require("telescope").extensions.rest.select_env()
+end, "")
 
 local actions = require("telescope.actions")
 

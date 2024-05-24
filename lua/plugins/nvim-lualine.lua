@@ -59,7 +59,7 @@ local sections = {
 	},
 	lualine_z = { { "location", separator = { right = "" }, left_padding = 2 } },
 }
-local tabline = {
+local winbar = {
 	lualine_a = { { "hostname", separator = { left = "" }, right_padding = 2 } },
 	lualine_b = {
 		{
@@ -82,7 +82,7 @@ local tabline = {
 	},
 	lualine_z = { { "tabs", separator = { left = "", right = "" }, left_padding = 2 } },
 }
-local winbar = {
+local tabline = {
 	lualine_a = {
 		{
 			"buffers",

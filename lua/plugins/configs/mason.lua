@@ -12,6 +12,8 @@ local servers = {
 	"marksman",
 	"prettier",
 	"grammarly",
+	"prismals",
+	"texlab",
 	"ltex",
 }
 
