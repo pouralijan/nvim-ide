@@ -1,5 +1,6 @@
 -- Utilities for creating configurations
 local util = require("formatter.util")
+local defaults = require("formatter.defaults")
 
 return {
 	-- Enable or disable logging
@@ -43,6 +44,12 @@ return {
 		},
 		cmake = {
 			require("formatter.filetypes.cmake").cmakeformat,
+		},
+		sh = {
+			require("formatter.filetypes.sh").shfmt,
+		},
+		["*"] = {
+			util.copyf(defaults.prettier),
 		},
 	},
 }
