@@ -65,7 +65,7 @@ local options = function()
 			},
 		},
 
-		extensions_list = { "themes", "fzf", "media_files", "vim_bookmarks" },
+		extensions_list = { "themes", "fzf", "media_files", "bookmarks" },
 		extensions = {
 			media_files = {
 				-- filetypes whitelist
@@ -87,14 +87,6 @@ local config = function(_, opts)
 	local telescope = require("telescope")
 	telescope.setup(opts)
 
-	local keymap = vim.keymap
-	keymap.set("n", "ma", function()
-		telescope.extensions.vim_bookmarks.all()
-	end)
-	keymap.set("n", "mc", function()
-		telescope.extensions.vim_bookmarks.current_file()
-	end)
-
 	-- load extensions
 	for _, ext in ipairs(opts.extensions_list) do
 		telescope.load_extension(ext)
@@ -105,8 +97,8 @@ return {
 	lazy = false,
 	cmd = "Telescope",
 	dependencies = {
-		"MattesGroeger/vim-bookmarks",
-		"tom-anders/telescope-vim-bookmarks.nvim",
+		-- "MattesGroeger/vim-bookmarks",
+		-- "tom-anders/telescope-vim-bookmarks.nvim",
 		"nvim-lua/plenary.nvim",
 		"andrew-george/telescope-themes",
 		{
