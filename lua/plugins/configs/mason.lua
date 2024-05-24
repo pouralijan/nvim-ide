@@ -9,6 +9,10 @@ local servers = {
 	"jqls",
 	"jsonls",
 	"tsserver",
+	"marksman",
+	"prettier",
+	"grammarly",
+	"ltex",
 }
 
 local settings = {
