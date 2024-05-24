@@ -192,7 +192,7 @@ MyMap("n", "<leader>tt", "<cmd> Telescope toggleterm_manager <CR>", "Pick hidden
 -- theme switcher
 MyMap("n", "<leader>ttc", "<cmd> Telescope themes <CR>", "Telescope themes")
 
-MyMap("n", "<leader>tm", "<cmd> Telescope marks <CR>", "Telescope bookmarks")
+MyMap("n", "<leader>tm", "<cmd> Telescope bookmarks list <CR>", "Telescope bookmarks")
 
 -- Telescope
 -- Notify
