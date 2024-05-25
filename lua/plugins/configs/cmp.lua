@@ -159,7 +159,7 @@ local options = {
 				key = "", -- huggingface.co api key
 			},
 		},
-		-- { name = "codeium" },
+		{ name = "codeium" },
 		{ name = "cmp_tabnine" },
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lua" },

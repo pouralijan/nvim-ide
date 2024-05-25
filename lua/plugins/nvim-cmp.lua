@@ -24,8 +24,8 @@ local M = {
 				"nvim-lua/plenary.nvim",
 				"hrsh7th/nvim-cmp",
 			},
-			config = function()
-				require("codeium").setup({})
+			config = function(_, opts)
+				require("codeium").setup(opts)
 			end,
 		},
 
