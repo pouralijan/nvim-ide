@@ -16,6 +16,7 @@ local servers = {
 	"texlab",
 	"ltex",
 	"dartls",
+	"black",
 }
 
 local settings = {

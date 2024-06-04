@@ -107,10 +107,10 @@ local options = {
 
 			vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
 			vim_item.menu = ({
-				cmp_clippy = "[AI Clippy]",
+				nvim_lsp = "[LSP]",
 				codeium = "[AI Codeium]",
 				cmp_tabnine = "[Tabnine]",
-				nvim_lsp = "[LSP]",
+				cmp_clippy = "[AI Clippy]",
 				nvim_lua = "[NVIM_LUA]",
 				luasnip = "[Snippet]",
 				crates = "[crates]",
@@ -152,6 +152,7 @@ local options = {
 		end,
 	},
 	sources = {
+		{ name = "nvim_lsp" },
 		{
 			name = "cmp-clippy",
 			options = {
@@ -161,7 +162,6 @@ local options = {
 		},
 		{ name = "codeium" },
 		{ name = "cmp_tabnine" },
-		{ name = "nvim_lsp" },
 		{ name = "nvim_lua" },
 		{ name = "luasnip" },
 		{ name = "buffer" },
