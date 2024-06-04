@@ -37,7 +37,7 @@ return {
 			require("formatter.filetypes.cpp").clangformat,
 		},
 		python = {
-			require("formatter.filetypes.python").autopep8,
+			require("formatter.filetypes.python").black,
 		},
 		json = {
 			require("formatter.filetypes.json").jq,
@@ -56,9 +56,6 @@ return {
 		},
 		latex = {
 			require("formatter.filetypes.latex").latexindent,
-		},
-		["*"] = {
-			util.copyf(defaults.prettier),
 		},
 	},
 }

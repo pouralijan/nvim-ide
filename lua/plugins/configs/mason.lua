@@ -15,6 +15,7 @@ local servers = {
 	"prismals",
 	"texlab",
 	"ltex",
+	"black",
 }
 
 local settings = {
