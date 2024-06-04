@@ -1,6 +1,6 @@
 local lsp = function()
 	local msg = "No Active Lsp"
-	local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+	local buf_ft = vim.api.nvim_get_option_value("filetype", {})
 	local clients = vim.lsp.get_active_clients()
 	if next(clients) == nil then
 		return msg
@@ -12,6 +12,19 @@ local lsp = function()
 		end
 	end
 	return msg
+end
+
+local actived_venv = function()
+	local filetype = vim.api.nvim_get_option_value("filetype", {})
+	if filetype == "python" then
+		local venv_name = require("venv-selector").get_active_venv()
+		if venv_name ~= nil then
+			return string.gsub(venv_name, ".*/pypoetry/virtualenvs/", "(poetry) ")
+		else
+			return "venv"
+		end
+	end
+	return ""
 end
 
 local options = {
@@ -47,9 +60,12 @@ local sections = {
 		{
 			"diagnostics",
 		},
+		{ actived_venv, separator = { right = "", left = "" } },
 	},
 	lualine_c = {},
-	lualine_x = { { lazy_status.updates, cond = lazy_status.has_updates, color = { fg = "#ff9e64" } } },
+	lualine_x = {
+		{ lazy_status.updates, cond = lazy_status.has_updates, color = { fg = "#ff9e64" } },
+	},
 	lualine_y = {
 		{ "filesize" },
 		{ "filetype" },
