@@ -39,6 +39,9 @@ return {
 		python = {
 			require("formatter.filetypes.python").autopep8,
 		},
+		dart = {
+			require("formatter.filetypes.dart").dartformat,
+		},
 		json = {
 			require("formatter.filetypes.json").jq,
 		},

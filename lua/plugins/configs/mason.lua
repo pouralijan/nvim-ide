@@ -15,6 +15,7 @@ local servers = {
 	"prismals",
 	"texlab",
 	"ltex",
+	"dartls",
 }
 
 local settings = {
