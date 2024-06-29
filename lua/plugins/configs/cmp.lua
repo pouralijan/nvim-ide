@@ -168,6 +168,8 @@ local options = {
 		{ name = "path" },
 		{ name = "crates" },
 		{ name = "taplo" },
+		{ name = "emoji" },
+		{ name = "nerdfont" },
 	},
 	confirm_opts = {
 		behavior = cmp.ConfirmBehavior.Replace,

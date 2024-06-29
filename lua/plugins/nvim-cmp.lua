@@ -30,6 +30,8 @@ local M = {
 		},
 
 		{ "vappolinario/cmp-clippy" },
+		{ "hrsh7th/cmp-emoji" },
+		{ "chrisgrieser/cmp-nerdfont" },
 	},
 	opts = function()
 		return require("plugins.configs.cmp")
