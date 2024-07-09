@@ -12,11 +12,14 @@ local servers = {
 	"marksman",
 	"prettier",
 	"grammarly",
+	"gradle_ls",
 	"prismals",
 	"texlab",
 	"ltex",
 	"dartls",
 	"black",
+	"dockerls",
+	"docker_compose_language_service",
 }
 
 local settings = {

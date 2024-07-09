@@ -29,9 +29,10 @@ end
 
 local options = {
 	theme = "auto",
-	disabled_filetypes = { "packer", "NvimTree", "neo-tree" },
+	disabled_filetypes = { "packer", "NvimTree", "neo-tree", "__FLUTTER_DEV_LOG__", "log" },
 	ignore_focus = {},
-	always_divide_middle = true,
+
+	always_divide_middle = false,
 	globalstatus = false,
 	icons_enabled = true,
 	component_separators = "",
