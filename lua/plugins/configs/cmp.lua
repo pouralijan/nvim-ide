@@ -98,6 +98,17 @@ local options = {
 			"s",
 		}),
 	},
+	completion = {
+		keyword_length = 3,
+	},
+	performance = {
+		max_view_entries = 7,
+	},
+	view = {
+		docs = {
+			auto_open = true,
+		},
+	},
 
 	formatting = {
 		fields = { "kind", "abbr", "menu" },
@@ -176,6 +187,7 @@ local options = {
 		select = false,
 	},
 	window = {
+		completion = cmp.config.window.bordered(),
 		documentation = cmp.config.window.bordered(),
 	},
 	experimental = {

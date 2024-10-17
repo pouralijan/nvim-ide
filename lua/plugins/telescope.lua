@@ -54,11 +54,13 @@ local options = function()
 				theme = "ivy",
 				-- previewer = false,
 				hidden = true,
+				-- cache_picker = true,
 			},
-			-- live_grep = {
-			-- 	theme = "dropdown",
-			-- 	-- previewer = false,
-			-- },
+			live_grep = {
+				-- cache_picker = true,
+				-- 	theme = "dropdown",
+				-- 	-- previewer = false,
+			},
 			find_buffers = {
 				theme = "cursor",
 				-- previewer = false,

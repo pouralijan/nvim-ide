@@ -1,7 +1,85 @@
+local function get_attached_clients()
+	-- Get active clients for current buffer
+	local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
+	if #buf_clients == 0 then
+		return "No client active"
+	end
+	local buf_ft = vim.bo.filetype
+	local buf_client_names = {}
+	local num_client_names = #buf_client_names
+
+	-- Add lsp-clients active in the current buffer
+	for _, client in pairs(buf_clients) do
+		num_client_names = num_client_names + 1
+		buf_client_names[num_client_names] = client.name
+	end
+
+	-- Add linters for the current filetype (nvim-lint)
+	local lint_success, lint = pcall(require, "lint")
+	if lint_success then
+		for ft, ft_linters in pairs(lint.linters_by_ft) do
+			if ft == buf_ft then
+				if type(ft_linters) == "table" then
+					for _, linter in pairs(ft_linters) do
+						num_client_names = num_client_names + 1
+						buf_client_names[num_client_names] = linter
+					end
+				else
+					num_client_names = num_client_names + 1
+					buf_client_names[num_client_names] = ft_linters
+				end
+			end
+		end
+	end
+
+	-- Add formatters (conform.nvim)
+	local conform_success, conform = pcall(require, "conform")
+	if conform_success then
+		for _, formatter in pairs(conform.list_formatters_for_buffer(0)) do
+			if formatter then
+				num_client_names = num_client_names + 1
+				buf_client_names[num_client_names] = formatter
+			end
+		end
+	end
+	local formatter_f, _ = pcall(require, "formatter")
+
+	if formatter_f then
+		local formatter_util = require("formatter.util")
+		for _, _formatter in ipairs(formatter_util.get_available_formatters_for_ft(0)) do
+			num_client_names = num_client_names + 1
+			buf_client_names[num_client_names] = _formatter
+		end
+	end
+
+	local client_names_str = table.concat(buf_client_names, ", ")
+	local language_servers = string.format("[%s]", client_names_str)
+
+	return language_servers
+end
+local formatter = function()
+	local formatter_s, _ = pcall(require, "formatter")
+	local msg = "No Active formater"
+
+	if formatter_s then
+		local formatter_util = require("formatter.util")
+		local buf_ft = vim.bo.filetype
+		for _, _formatter in ipairs(formatter_util.get_available_formatters_for_ft(buf_ft)) do
+			for a, b in ipairs(_formatter) do
+				-- vim.notify(a)
+				vim.notify(b)
+				return b
+			end
+			return _formatter
+		end
+	end
+	return msg
+end
+
 local lsp = function()
 	local msg = "No Active Lsp"
 	local buf_ft = vim.api.nvim_get_option_value("filetype", {})
-	local clients = vim.lsp.get_active_clients()
+	local clients = vim.lsp.get_clients()
 	if next(clients) == nil then
 		return msg
 	end
@@ -29,7 +107,20 @@ end
 
 local options = {
 	theme = "auto",
-	disabled_filetypes = { "packer", "NvimTree", "neo-tree", "__FLUTTER_DEV_LOG__", "log" },
+	disabled_filetypes = {
+		"packer",
+		"NvimTree",
+		"neo-tree",
+		"__FLUTTER_DEV_LOG__",
+		"log",
+		"trouble",
+		"dapui_scopes",
+		"dapui_breakpoints",
+		"dapui_stacks",
+		"dapui_watches",
+		"dapui_console",
+		"dap-repl",
+	},
 	ignore_focus = {},
 
 	always_divide_middle = false,

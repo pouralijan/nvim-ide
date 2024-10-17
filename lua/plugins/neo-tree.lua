@@ -1,5 +1,6 @@
 local config = function()
 	require("neo-tree").setup({
+		auto_expand_width = false,
 		close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
 		popup_border_style = "rounded",
 		enable_git_status = true,

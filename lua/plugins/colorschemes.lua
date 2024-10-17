@@ -1,5 +1,16 @@
 local M = {
 	{
+		"scottmckendry/cyberdream.nvim",
+		lazy = false,
+		priority = 1000,
+	},
+	{
+		"0xstepit/flow.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+	},
+	{
 		"lunarvim/darkplus.nvim",
 		lazy = false,
 		priority = 1000,

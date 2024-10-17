@@ -64,14 +64,32 @@ M.on_attach = function(client, bufnr)
 	-- client.server_capabilities.documentFormattingProvider = false
 	-- client.server_capabilities.documentRangeFormattingProvider = false
 	-- lsp_keymaps(bufnr)
+	-- client.server_capabilities.completionProvider = true
+	-- client.server_capabilities.hoverProvider = false
+	-- client.server_capabilities.definitionProvider = false
+	-- client.server_capabilities.rename = false
+	-- client.server_capabilities.signature_help = false
+
 	-- lsp_highlight_document(client)
 	return require("core.keymaps").lsp_keymaps(client, bufnr)
 end
 
 -- M.capabilities = {}
-local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+-- local lsp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+-- if lsp_status_ok then
+-- 	M.capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- 	-- M.capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- end
+local status_ok, cmp_nvim = pcall(require, "cmp_nvim")
+
 if status_ok then
-	M.capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+	M.capabilities = cmp_nvim.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+	-- M.capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+	local lspconfig = require("lspconfig")
+	lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
+		-- Required by nvim-cmp
+		capabilities = M.capabilities,
+	})
 end
 
 return M

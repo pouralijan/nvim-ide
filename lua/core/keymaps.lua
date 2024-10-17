@@ -25,7 +25,6 @@ local MyMap = function(mode, lhs, rhs, desc, opts)
 end
 
 M.load_mapping = function(keymap_table)
-	--
 	for mode, mode_value in pairs(keymap_table) do
 		for keybind, mapping_info in pairs(mode_value) do
 			local action = mapping_info[1] or {}
@@ -136,22 +135,31 @@ nvim_keymap("v", "<C-_>", "gcc", { noremap = false })
 -- Trouble
 MyMap("n", "<leader>xx", function()
 	require("trouble").toggle()
-end, "Troble toggle")
-MyMap("n", "<leader>xw", function()
-	require("trouble").toggle("workspace_diagnostics")
 end, "Troble workspace diagnostics")
-MyMap("n", "<leader>xd", function()
-	require("trouble").toggle("document_diagnostics")
-end, "Troble document diagnostics")
-MyMap("n", "<leader>xq", function()
-	require("trouble").toggle("quickfix")
-end, "Troble quickfix")
-MyMap("n", "<leader>xl", function()
-	require("trouble").toggle("loclist")
-end, "Troble loclist")
-MyMap("n", "gr", function()
-	require("trouble").toggle("lsp_references")
-end, "Troble lsp_references")
+-- MyMap("n", "<leader>xw", function()
+-- 	require("trouble").toggle("workspace_diagnostics")
+-- end, "Troble workspace diagnostics")
+--
+MyMap("n", "<leader>xw", "<cmd> Trouble diagnostics toggle <cr>", "Troble workspace diagnostics")
+
+MyMap("n", "<leader>xd", "<cmd> Trouble diagnostics toggle focus=true filter.buf=0 <cr>", "Troble document diagnostics")
+
+MyMap("n", "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>", "Troble document symbols")
+
+-- MyMap("n", "<leader>xq", function()
+-- 	require("trouble").toggle("quickfix")
+-- end, "Troble quickfix")
+MyMap("n", "<leader>xq", "<cmd>Trouble qflist toggle<cr>", "Troble quickfix")
+
+-- MyMap("n", "<leader>xl", function()
+-- 	require("trouble").toggle("loclist")
+-- end, "Troble loclist")
+MyMap("n", "<leader>xl", "<cmd>Trouble loclist toggle<cr>", "Troble loclist")
+
+-- MyMap("n", "gr", function()
+-- 	require("trouble").toggle("lsp_references")
+-- end, "Troble lsp_references")
+MyMap("n", "<leader>xr", "<cmd>Trouble lsp toggle focus=true<cr>", "Troble lsp_references")
 
 -- Telescope
 -- local telescope_builtin = require('telescope.builtin')
@@ -162,22 +170,38 @@ MyMap("n", "<leader>th", ":Telescope help_tags<CR>")
 -- find
 MyMap("n", "<leader>tf", "<cmd> Telescope find_files <CR>", "Find files")
 MyMap("n", "<leader>ts", "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all")
-MyMap("n", "<leader>tl", "<cmd> Telescope live_grep <CR>", "Live grep")
+-- MyMap("n", "<leader>tl", "<cmd> Telescope live_grep <CR>", "Live grep")
+MyMap("n", "<leader>tl", function()
+	local telescope = require("telescope.builtin")
+	local telescope_state = require("telescope.state")
+
+	local last_search = nil
+
+	if last_search == nil then
+		telescope.live_grep()
+
+		local cached_pickers = telescope_state.get_global_key("cached_pickers") or {}
+		last_search = cached_pickers[1]
+	else
+		telescope.resume({ picker = last_search })
+	end
+end, "Live grep")
 MyMap("n", "<leader>tb", "<cmd> Telescope buffers <CR>", "Find buffers")
 MyMap("n", "<leader>th", "<cmd> Telescope help_tags <CR>", "Help page")
 MyMap("n", "<leader>to", "<cmd> Telescope oldfiles <CR>", "Find oldfiles")
 MyMap("n", "<leader>tz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer")
+MyMap("n", "<leader>tr", "<cmd> Telescope resume<CR>", "Find in current buffer")
 
 -- Telescope
 -- git
 MyMap("n", "<leader>gm", "<cmd> Telescope git_commits <CR>", "show Git commits")
 MyMap("n", "<leader>gt", "<cmd> Telescope git_status <CR>", "Git status")
 
-MyMap("n", "<leader>gl", function()
-	local Terminal = require("toggleterm.terminal").Terminal
-	local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
-	lazygit:toggle()
-end, "Lazy Git")
+-- MyMap("n", "<leader>gl", function()
+-- 	local Terminal = require("toggleterm.terminal").Terminal
+-- 	local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+-- 	lazygit:toggle()
+-- end, "Lazy Git")
 
 MyMap("n", "<leader>ghp", "<cmd> Gitsigns preview_hunk <CR>", "Git preview hunk")
 MyMap("n", "<leader>gh", "<cmd> Gitsigns preview_hunk_inline <CR>", "Git preview hunk inline")
@@ -336,32 +360,111 @@ function M.lsp_keymaps(client, bufnr)
 	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
 end
 
--- DAP
-M.dap = {
-	n = {
-		["<leader>db"] = {
-			"<cmd>:DapToggleBreakpoint <CR>",
-			"Add breakpoing at line",
+M.ufo = function()
+	--     vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+	-- vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+	-- vim.keymap.set('n', 'zr', require('ufo').openFoldsExceptKinds)
+	-- vim.keymap.set('n', 'zm', require('ufo').closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+	-- vim.keymap.set('n', 'K', function()
+	--     local winid = require('ufo').peekFoldedLinesUnderCursor()
+	--     if not winid then
+	--         -- choose one of coc.nvim and nvim lsp
+	--         vim.fn.CocActionAsync('definitionHover') -- coc.nvim
+	--         vim.lsp.buf.hover()
+	--     end
+	local ufo = require("ufo")
+	local dap_keys = {
+		n = {
+			["zR"] = {
+				ufo.openAllFolds,
+				"Open All folds with UFO",
+			},
+			["zM"] = {
+				ufo.closeAllFolds,
+				"Close All folds with UFO",
+			},
+			["zr"] = {
+				ufo.openFoldsExceptKinds,
+				"Open All folds Expect kinds with UFO",
+			},
 		},
-		["<F5>"] = {
-			function()
-				local dap_projects = require("nvim-dap-projects")
+	}
+	M.load_mapping(dap_keys)
+end
 
-				dap_projects.search_project_config()
-				local dap = require("dap")
-				dap.continue()
-			end,
-			"Start or continue the debuger",
+M.dap = function()
+	-- DAP
+	local dap = require("dap")
+	local dapui = require("dapui")
+	local dap_projects = require("nvim-dap-projects")
+	local dap_keys = {
+		n = {
+			["<leader>db"] = {
+				dap.toggle_breakpoint,
+				"Add breakpoing at line",
+			},
+			["<leader>dc"] = {
+				dap.run_to_cursor,
+				"Run to cursor",
+			},
+			["<leader>d?"] = {
+				function()
+					dapui.eval(nil, { enter = true })
+				end,
+				"Eval var under cursor",
+			},
+
+			["<leader>dut"] = {
+				dapui.toggle,
+				"Start or continue the debuger",
+			},
+			["<F5>"] = {
+				dap.continue,
+				"Start or continue the debuger",
+			},
+			["<F10>"] = {
+				dap.step_over,
+				"DAP Step Over",
+			},
+			["<leader>dn"] = {
+				dap.step_over,
+				"DAP Step Over",
+			},
+			["<F11>"] = {
+				dap.step_into,
+				"DAP Step Into",
+			},
+			["<leader>di"] = {
+				dap.step_into,
+				"DAP Step Into",
+			},
+			["<F12>"] = {
+				dap.step_out,
+				"DAP Step Out",
+			},
+			["<leader>do"] = {
+				dap.step_out,
+				"DAP Stop Out",
+			},
+			["<F9>"] = {
+				dap.step_back,
+				"DAP Step Back",
+			},
+			["<leader>dp"] = {
+				dap.step_back,
+				"DAP Stop Back",
+			},
+			["<F8>"] = {
+				dap.restart,
+				"DAP Restart",
+			},
+			["<leader>dr"] = {
+				dap.restart,
+				"DAP Restart",
+			},
 		},
-		["<F10>"] = {
-			"<cmd>DapStepOver <CR>",
-			"DAP Stop Over",
-		},
-		["<F11>"] = {
-			"<cmd>DapStepInto <CR>",
-			"DAP Stop Into",
-		},
-	},
-}
+	}
+	M.load_mapping(dap_keys)
+end
 
 return M
