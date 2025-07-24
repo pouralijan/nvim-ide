@@ -1,0 +1,120 @@
+local M = {
+	{
+	"scottmckendry/cyberdream.nvim",
+	lazy = false,
+	priority = 1000,
+	},
+	{
+	"0xstepit/flow.nvim",
+	lazy = false,
+	priority = 1000,
+	opts = {},
+	},
+	{
+	"lunarvim/darkplus.nvim",
+	lazy = false,
+	priority = 1000,
+	},
+	{
+		"EdenEast/nightfox.nvim",
+		lazy = false,
+		priority = 1000,
+		options = {
+			transparent = true,
+			styles = {
+				sidebars = "transparent",
+				floats = "transparent",
+			},
+		},
+	},
+	{
+	"bluz71/vim-nightfly-colors",
+	 	name = "nightfly",
+	 	lazy = false,
+	 	priority = 1000,
+	 },
+	 {
+	 	lazy = false,
+	 	"catppuccin/nvim",
+	 	name = "catppuccin",
+	 	priority = 9999,
+	 },
+	 {
+	 	"folke/tokyonight.nvim",
+	 	lazy = false,
+	 	priority = 1000,
+	 	opts = {
+	 		transparent = true,
+	 		styles = {
+	 			sidebars = "transparent",
+	 			floats = "transparent",
+	 		},
+	 	},
+	 },
+	 {
+	 	"AlexvZyl/nordic.nvim",
+	 	lazy = false,
+	 	priority = 1000,
+	 },
+	 {
+	 	"olivercederborg/poimandres.nvim",
+	 	lazy = false,
+	 	priority = 1000,
+	 },
+	 {
+	 	"uloco/bluloco.nvim",
+	 	lazy = false,
+	 	priority = 1000,
+	 	dependencies = { "rktjmp/lush.nvim" },
+	 },
+	 {
+	 	"Everblush/nvim",
+	 	name = "everblush",
+	 	lazy = false,
+	 	priority = 1000,
+	 },
+	 {
+	 	"rebelot/kanagawa.nvim",
+	 	lazy = false,
+	 	priority = 1000,
+        config = function()
+            require("kanagawa").setup({compile=true, transparent=true})
+        end,
+        build = function()
+            vim.cmd("kanagawaCompile")
+        end,
+	 },
+	 {
+	 	"NLKNguyen/papercolor-theme",
+	 	lazy = false,
+	 	priority = 1000,
+	 },
+	 {
+	 	"ellisonleao/gruvbox.nvim",
+	 	priority = 1000,
+	 	lazy = false,
+	 	config = true,
+	 },
+	 {
+	 	"Mofiqul/dracula.nvim",
+	 	lazy = false,
+	 	priority = 1000,
+	 },
+	 {
+	 	"joshdick/onedark.vim",
+	 	lazy = false,
+	 	priority = 1000,
+	 },
+	 {
+	 	"romainl/Apprentice",
+	 	lazy = false,
+	 	priority = 1000,
+	 },
+	 {
+	 	"shaunsingh/solarized.nvim",
+	 	lazy = false,
+	 	priority = 1000,
+	},
+}
+
+return M

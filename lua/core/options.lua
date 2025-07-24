@@ -1,8 +1,20 @@
+-- NOTE: This should be load before lazy
 local opt = vim.opt
 local cmd = vim.cmd
-
+if vim.g.neovide then
+	-- Put anything you want to happen only in Neovide here
+	vim.o.guifont = "FiraCode Nerd Font:h11"
+end
 cmd("filetype plugin on")
 cmd("let g:netrw_liststyle = 3") -- set default vim file explorer as tree view
+
+cmd([[
+  highlight Normal guibg=none
+  highlight NonText guibg=none
+  highlight Normal ctermbg=none
+  highlight NonText ctermbg=none
+]])
+
 -- Tap / Indentation
 opt.tabstop = 4
 opt.shiftwidth = 4
@@ -48,7 +60,7 @@ opt.encoding = "UTF-8"
 
 -- Other
 opt.conceallevel = 0
-opt.fileencoding = "utf-8"
+-- opt.fileencoding = "utf-8"
 opt.pumheight = 10
 opt.showmode = true
 opt.showtabline = 2

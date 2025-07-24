@@ -1,0 +1,3 @@
+return {
+	"stsewd/sphinx.nvim",
+}

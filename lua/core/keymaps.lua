@@ -36,12 +36,16 @@ M.load_mapping = function(keymap_table)
 end
 
 M.MyMap = MyMap
-
--- Remap space as leadder key
 MyMap("", "<Space>", "Nop")
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
+M.set_mapleader = function()
+	-- Remap space as leadder key
+	vim.g.mapleader = " "
+	vim.g.maplocalleader = "\\"
+	vim.g.maplocalleader = "\\"
+end
+
+M.set_mapleader()
 -- General
 -- Pane Navigation
 MyMap("n", "<C-h>", "<C-w>h", "Navigate Left Pane")
@@ -88,11 +92,23 @@ MyMap({ "n", "o", "x" }, "<s-l>", "g_", "Move start of line")
 
 -- Plugins
 --
+-- Oil
+MyMap("n", "-", "<CMD>Oil<CR>", "Open parent directory")
 
--- Flutter Tools
-MyMap("n", "<leader>ff", function()
-	require("telescope").extensions.flutter.commands()
-end, "Open Telescope Flutter's commands ")
+MyMap("n", "<leader>fb", function()
+	require("flutter-bloc").create_bloc()
+end, "Create flutter bloc")
+
+MyMap("n", "<leader>fc", function()
+	require("flutter-bloc").create_cubit()
+end, "Create flutter cubit")
+
+vim.keymap.set(
+	"n",
+	"<Leader>cfc",
+	"<cmd>lua require('flutter-bloc').create_cubit()<cr>",
+	{ desc = "[C]reate [F]lutter [C]ubit" }
+)
 
 -- AutoFormat
 MyMap("n", "<leader>af", ":FormatWrite<CR>", "Auto Formate")
@@ -104,8 +120,9 @@ end, "Pick python virtual env")
 -- Directory Navigation
 -- neo-tree
 MyMap("n", "<C-e>", ":Neotree toggle<CR>", "Toggle nvimtree")
-MyMap("n", "<leader>e", ":Neotree focus<CR>", "Focus nvimtree")
+MyMap("n", "<leader>e", ":Neotree filesystem reveal left<CR>", "Focus nvimtree")
 MyMap("n", "<leader>et", ":Neotree toggle<CR>")
+MyMap("n", "<leader>ef", ":Neotree filesystem reveal float<CR>")
 
 -- whichkey
 --"Which-key all keymaps",
@@ -161,42 +178,6 @@ MyMap("n", "<leader>xl", "<cmd>Trouble loclist toggle<cr>", "Troble loclist")
 -- end, "Troble lsp_references")
 MyMap("n", "<leader>xr", "<cmd>Trouble lsp toggle focus=true<cr>", "Troble lsp_references")
 
--- Telescope
--- local telescope_builtin = require('telescope.builtin')
-MyMap("n", "<leader>ta", ":Telescope")
--- MyMap("n", "<leader>fk", telescope_builtin.keymaps)
-MyMap("n", "<leader>th", ":Telescope help_tags<CR>")
--- Telescope
--- find
-MyMap("n", "<leader>tf", "<cmd> Telescope find_files <CR>", "Find files")
-MyMap("n", "<leader>ts", "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all")
--- MyMap("n", "<leader>tl", "<cmd> Telescope live_grep <CR>", "Live grep")
-MyMap("n", "<leader>tl", function()
-	local telescope = require("telescope.builtin")
-	local telescope_state = require("telescope.state")
-
-	local last_search = nil
-
-	if last_search == nil then
-		telescope.live_grep()
-
-		local cached_pickers = telescope_state.get_global_key("cached_pickers") or {}
-		last_search = cached_pickers[1]
-	else
-		telescope.resume({ picker = last_search })
-	end
-end, "Live grep")
-MyMap("n", "<leader>tb", "<cmd> Telescope buffers <CR>", "Find buffers")
-MyMap("n", "<leader>th", "<cmd> Telescope help_tags <CR>", "Help page")
-MyMap("n", "<leader>to", "<cmd> Telescope oldfiles <CR>", "Find oldfiles")
-MyMap("n", "<leader>tz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer")
-MyMap("n", "<leader>tr", "<cmd> Telescope resume<CR>", "Find in current buffer")
-
--- Telescope
--- git
-MyMap("n", "<leader>gm", "<cmd> Telescope git_commits <CR>", "show Git commits")
-MyMap("n", "<leader>gt", "<cmd> Telescope git_status <CR>", "Git status")
-
 -- MyMap("n", "<leader>gl", function()
 -- 	local Terminal = require("toggleterm.terminal").Terminal
 -- 	local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
@@ -214,151 +195,93 @@ MyMap("n", "<leader>gtn", "<cmd> Gitsigns toggle_numhl<CR>", "Git toggle number 
 MyMap("n", "<leader>dgl", "<cmd> diffget LO<CR>", "Diff get local")
 MyMap("n", "<leader>dgr", "<cmd> diffget RE<CR>", "Diff get remote")
 
--- Telescope
--- pick a hidden term
-MyMap("n", "<leader>tt", "<cmd> Telescope toggleterm_manager <CR>", "Pick hidden term")
-
--- Telescope
--- theme switcher
-MyMap("n", "<leader>ttc", "<cmd> Telescope themes <CR>", "Telescope themes")
-
-MyMap("n", "<leader>tm", "<cmd> Telescope bookmarks list <CR>", "Telescope bookmarks")
-
--- Telescope
--- Notify
-MyMap("n", "<leader>tn", function()
-	require("telescope").extensions.notify.notify()
-end, "Notifications list")
-
--- Telescope
 -- Rest
-MyMap("n", "<leader>re", function()
-	require("telescope").extensions.rest.select_env()
-end, "")
-
-local actions = require("telescope.actions")
-
-M.telescope = {
-	i = {
-		["<C-n>"] = actions.cycle_history_next,
-		["<C-p>"] = actions.cycle_history_prev,
-
-		["<C-j>"] = actions.move_selection_next,
-		["<C-k>"] = actions.move_selection_previous,
-
-		["<C-c>"] = actions.close,
-
-		["<Down>"] = actions.move_selection_next,
-		["<Up>"] = actions.move_selection_previous,
-
-		["<CR>"] = actions.select_default,
-		["<C-x>"] = actions.select_horizontal,
-		["<C-v>"] = actions.select_vertical,
-		["<C-t>"] = actions.select_tab,
-
-		["<C-u>"] = actions.preview_scrolling_up,
-		["<C-d>"] = actions.preview_scrolling_down,
-
-		["<PageUp>"] = actions.results_scrolling_up,
-		["<PageDown>"] = actions.results_scrolling_down,
-
-		["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-		["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-		["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-		["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-		["<C-l>"] = actions.complete_tag,
-		["<C-_>"] = actions.which_key, -- keys from pressing <C-/>
-	},
-
+M.rest = {
 	n = {
-		["<esc>"] = actions.close,
-		["<CR>"] = actions.select_default,
-		["<C-x>"] = actions.select_horizontal,
-		["<C-v>"] = actions.select_vertical,
-		["<C-t>"] = actions.select_tab,
-
-		["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-		["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-		["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-		["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-
-		["j"] = actions.move_selection_next,
-		["k"] = actions.move_selection_previous,
-		["H"] = actions.move_to_top,
-		["M"] = actions.move_to_middle,
-		["L"] = actions.move_to_bottom,
-
-		["<Down>"] = actions.move_selection_next,
-		["<Up>"] = actions.move_selection_previous,
-		["gg"] = actions.move_to_top,
-		["G"] = actions.move_to_bottom,
-
-		["<C-u>"] = actions.preview_scrolling_up,
-		["<C-d>"] = actions.preview_scrolling_down,
-
-		["<PageUp>"] = actions.results_scrolling_up,
-		["<PageDown>"] = actions.results_scrolling_down,
-
-		["?"] = actions.which_key,
+		["<leader>ro"] = {
+			"<cmd>Rest open<cr>",
+			-- function()
+			-- 	local rest = require("rest-nvim")
+			-- 	rest.open()
+			-- end,
+			"Open result pane",
+		},
+		["<leader>rr"] = {
+			"<cmd>Rest run<cr>",
+			-- function()
+			-- 	local rest = require("rest-nvim")
+			-- 	rest.run()
+			-- end,
+			"Run request under the cursor",
+		},
+		["<leader>rl"] = {
+			"<cmd>Rest last<cr>",
+			-- function()
+			-- 	local rest = require("rest-nvim")
+			-- 	rest.last()
+			-- end,
+			"Run last request",
+		},
 	},
 }
 
-function M.lsp_keymaps(client, bufnr)
-	local keymap_option = { noremap = true, silent = true, buffer = bufnr }
-	MyMap("n", "gD", function()
-		vim.lsp.buf.declaration()
-	end, "LSP declaration", keymap_option)
-	MyMap("n", "gd", function()
-		vim.lsp.buf.definition()
-	end, "LSP definition", keymap_option)
-	MyMap("n", "<leader>lD", function()
-		vim.lsp.buf.type_definition()
-	end, "LSP definition type", keymap_option)
-	MyMap("n", "K", function()
-		vim.lsp.buf.hover()
-	end, "LSP hover", keymap_option)
-	MyMap("n", "gi", function()
-		vim.lsp.buf.implementation()
-	end, "LSP implementation", keymap_option)
-	MyMap("n", "<C-k>", function()
-		vim.lsp.buf.signature_help()
-	end, "LSP signature help", keymap_option)
-	MyMap("n", "<leader>rn", function()
-		vim.lsp.buf.rename()
-	end, "LSP rename buffer", keymap_option)
-	MyMap("n", "<leader>ca", function()
-		vim.lsp.buf.code_action()
-	end, "LSP code action", keymap_option)
-	MyMap("n", "<leader>fx", function()
-		vim.diagnostic.open_float()
-	end, "Open Floating", keymap_option)
-	MyMap("n", "gl", function()
-		vim.diagnostic.open_float()
-	end, "Floating diagnostic", keymap_option)
-	MyMap("n", "[d", function()
-		vim.diagnostic.goto_prev({ border = "rounded" })
-	end, "Goto prev", keymap_option)
-	MyMap("n", "]d", function()
-		vim.diagnostic.goto_next({ border = "rounded" })
-	end, "Goto next", keymap_option)
-	MyMap("n", "<leader>q", function()
-		vim.diagnostic.setloclist()
-	end, "Diagnostic setloclist", keymap_option)
-	MyMap("n", "<leader>wa", function()
-		vim.lsp.buf.add_workspace_folder()
-	end, "Add workspace folder", keymap_option)
-	MyMap("n", "<leader>wr", function()
-		vim.lsp.buf.remove_workspace_folder()
-	end, "Remove workspace folder", keymap_option)
-	MyMap("n", "<leader>wl", function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, "List workspace folders", keymap_option)
-	MyMap("v", "<leader>ca", function()
-		vim.lsp.buf.code_action()
-	end, "LSP code action", keymap_option)
-
-	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
-end
+-- function M.lsp_keymaps(client, bufnr)
+-- M.lsp_keymaps = function(client, bufnr)
+-- 	local keymap_option = { noremap = true, silent = true, buffer = bufnr }
+-- 	MyMap("n", "gD", function()
+-- 		vim.lsp.buf.declaration()
+-- 	end, "LSP declaration", keymap_option)
+-- 	MyMap("n", "gd", function()
+-- 		vim.lsp.buf.definition()
+-- 	end, "LSP definition", keymap_option)
+-- 	MyMap("n", "<leader>lD", function()
+-- 		vim.lsp.buf.type_definition()
+-- 	end, "LSP definition type", keymap_option)
+-- 	MyMap("n", "K", function()
+-- 		vim.lsp.buf.hover()
+-- 	end, "LSP hover", keymap_option)
+-- 	MyMap("n", "gi", function()
+-- 		vim.lsp.buf.implementation()
+-- 	end, "LSP implementation", keymap_option)
+-- 	MyMap("n", "<C-k>", function()
+-- 		vim.lsp.buf.signature_help()
+-- 	end, "LSP signature help", keymap_option)
+-- 	MyMap("n", "<leader>rn", function()
+-- 		vim.lsp.buf.rename()
+-- 	end, "LSP rename buffer", keymap_option)
+-- 	MyMap("n", "<leader>ca", function()
+-- 		vim.lsp.buf.code_action()
+-- 	end, "LSP code action", keymap_option)
+-- 	MyMap("n", "<leader>fx", function()
+-- 		vim.diagnostic.open_float()
+-- 	end, "Open Floating", keymap_option)
+-- 	MyMap("n", "gl", function()
+-- 		vim.diagnostic.open_float()
+-- 	end, "Floating diagnostic", keymap_option)
+-- 	MyMap("n", "[d", function()
+-- 		vim.diagnostic.goto_prev({ border = "rounded" })
+-- 	end, "Goto prev", keymap_option)
+-- 	MyMap("n", "]d", function()
+-- 		vim.diagnostic.goto_next({ border = "rounded" })
+-- 	end, "Goto next", keymap_option)
+-- 	MyMap("n", "<leader>q", function()
+-- 		vim.diagnostic.setloclist()
+-- 	end, "Diagnostic setloclist", keymap_option)
+-- 	MyMap("n", "<leader>wa", function()
+-- 		vim.lsp.buf.add_workspace_folder()
+-- 	end, "Add workspace folder", keymap_option)
+-- 	MyMap("n", "<leader>wr", function()
+-- 		vim.lsp.buf.remove_workspace_folder()
+-- 	end, "Remove workspace folder", keymap_option)
+-- 	MyMap("n", "<leader>wl", function()
+-- 		vim.notify(vim.inspect(vim.lsp.buf.list_workspace_folders()), vim.log.levels.INFO)
+-- 	end, "List workspace folders", keymap_option)
+-- 	-- MyMap("v", "<leader>ca", function()
+-- 	-- 	vim.lsp.buf.code_action()
+-- 	-- end, "LSP code action", keymap_option)
+--
+-- 	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
+-- end
 
 M.ufo = function()
 	--     vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
