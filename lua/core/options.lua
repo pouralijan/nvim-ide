@@ -1,10 +1,12 @@
 -- NOTE: This should be load before lazy
 local opt = vim.opt
 local cmd = vim.cmd
+
 if vim.g.neovide then
 	-- Put anything you want to happen only in Neovide here
 	vim.o.guifont = "FiraCode Nerd Font:h11"
 end
+
 cmd("filetype plugin on")
 cmd("let g:netrw_liststyle = 3") -- set default vim file explorer as tree view
 
@@ -30,10 +32,14 @@ opt.ignorecase = true
 opt.hlsearch = true
 
 -- Appearance
+
+opt.winborder = "rounded"
+
 opt.relativenumber = true
 opt.cursorline = true
 opt.number = true
 
+-- cmd(":hi statusline guibg=NONE")
 opt.colorcolumn = "80,100,120"
 opt.termguicolors = true
 opt.signcolumn = "yes"
