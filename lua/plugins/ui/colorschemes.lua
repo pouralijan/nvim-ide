@@ -1,5 +1,5 @@
-require("plugins"):add("scottmckendry/cyberdream.nvim")
-require("plugins"):add("EdenEast/nightfox.nvim")
+require("plugins"):add("scottmckendry/cyberdream.nvim",
+    { "EdenEast/nightfox.nvim" })
 
 -- local M = {
 -- 	{
