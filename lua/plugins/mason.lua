@@ -36,6 +36,7 @@ local ensure_installed = {
     "staticcheck",
     "stylua",
     "taplo",
+    "typescript-language-server",
     "vim-language-server",
     "vint",
     "yaml-language-server",

@@ -1,14 +1,66 @@
 require("plugins"):add("ibhagwan/fzf-lua")
 require("plugins"):add("nvim-tree/nvim-web-devicons")
+
 -- optional for icon support
 -- dependencies = { "nvim-tree/nvim-web-devicons" },
 -- or if using mini.icons/mini.nvim
 -- dependencies = { "echasnovski/mini.icons" },
 --
+-- function ChangeColorScheme(selected, opts)
+--     if #selected == 0 then return end
+--     local dbkey, idx = selected[1]:match("^(.-):(%d+):")
+--     if dbkey then
+--         opts._apply_awesome_theme(dbkey, idx, opts)
+--     else
+--         local colorscheme = selected[1]:match("^[^:]+")
+--         pcall(function() vim.cmd("colorscheme " .. colorscheme) end)
+--         -- M:SaveColorScheme(colorscheme)
+--     end
+--
+--     vim.notify("Change colorscheme")
+--     local file_path = vim.fn.stdpath("config") .. "/.colorschemelll"
+--     local file = io.open(file_path, "w")
+--     if file then
+--         for index, value in ipairs(selected) do
+--             file:write(value)
+--         end
+--         file:close()
+--     end
+--     vim.notify(selected)
+--     -- M:SaveColorScheme(selected)
+-- end
+
+-- local ChangeColorScheme = require("core.utils").ChangeColorScheme
+-- local utlis = require("core.utils")
+-- local actions = require("fzf-lua").actions
 require("fzf-lua").setup({
-    fzf_colors = true,
+    -- fzf_colors = true,
+    -- awesome_colorschemes = {
+    --     --     -- prompt       = 'Colorschemes❯ ',
+    --     --     -- live_preview = true, -- apply the colorscheme on preview?
+    --     --     -- max_threads  = 5,    -- max download/update threads
+    --     --     -- winopts      = { row = 0, col = 0, width = 0.50 },
+    --     --     -- fzf_opts     = {
+    --     --     --     ["--multi"]     = true,
+    --     --     --     ["--delimiter"] = "[:]",
+    --     --     --     ["--with-nth"]  = "3..",
+    --     --     --     ["--tiebreak"]  = "index",
+    --     --     -- },
+    --     actions = {
+    --         --         -- ["enter"]  = require("core.utils").ChangeColorScheme,
+    --         ["ctrl-y"] = utlis.ChangeColorScheme,
+    --         ["ctrl-s"] = function(selected) print(selected[1]) end,
+    --         --         -- ["ctrl-g"] = { fn = actions.toggle_bg, exec_silent = true },
+    --         --         -- ["ctrl-r"] = { fn = actions.cs_update, reload = true },
+    --         --         -- ["ctrl-x"] = { fn = actions.cs_delete, reload = true },
+    --     },
+    -- },
     colorschemes = {
         preview = true, -- enable preview
+        -- actions = {
+        --     ["ctrl-y"] = utlis.ChangeColorScheme,
+        --     ["ctrl-s"] = function(selected) print(selected[1]) end,
+        -- },
         ignore_patterns = {
             "^blue$",
             "^darkblue$",
@@ -115,13 +167,7 @@ MyMap("n",
     "<leader>cd",
     function()
         local fzf = require("fzf-lua")
-        local a = fzf.awesome_colorschemes({
-            async = true,
-            fzf_opts = {
-                ["--bind"] = require("core.utils"):SaveColorScheme()
-            }
-        })
-        print(a)
+        fzf.awesome_colorschemes()
     end,
     "[f][/] Live grep the current buffer.", { noremap = true, silent = true })
 
@@ -129,12 +175,7 @@ MyMap("n",
     "<leader>cc",
     function()
         local fzf = require("fzf-lua")
-        local a = fzf.colorschemes({
-            fzf_opts = {
-                ["--bind"] = "enter:execute(ChangeColorScheme)"
-            }
-        })
-        print(a)
+        fzf.colorschemes()
     end,
     "[f][/] Live grep the current buffer.", { noremap = true, silent = true })
 -- =============== LSP

@@ -16,6 +16,7 @@ M.lsp = {
     "clangd",
     "rust_analyzer",
     "cmake",
+    "ts_ls",
 }
 
 -- M.capabilities = {}
