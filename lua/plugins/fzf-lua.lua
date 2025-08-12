@@ -1,6 +1,5 @@
-require("plugins"):add("ibhagwan/fzf-lua")
-require("plugins"):add("nvim-tree/nvim-web-devicons")
-
+require("plugins"):add("ibhagwan/fzf-lua",
+    { "nvim-tree/nvim-web-devicons" })
 -- optional for icon support
 -- dependencies = { "nvim-tree/nvim-web-devicons" },
 -- or if using mini.icons/mini.nvim
@@ -167,7 +166,13 @@ MyMap("n",
     "<leader>cd",
     function()
         local fzf = require("fzf-lua")
-        fzf.awesome_colorschemes()
+        local a = fzf.awesome_colorschemes({
+            async = true,
+            fzf_opts = {
+                ["--bind"] = "enter:execute(ChangeColorScheme)"
+            }
+        })
+        print(a)
     end,
     "[f][/] Live grep the current buffer.", { noremap = true, silent = true })
 
