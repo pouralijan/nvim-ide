@@ -1,3 +1,8 @@
+require("plugins"):add({
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" }
+})
+
 vim.o.foldcolumn = "1"
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
@@ -48,8 +53,7 @@ local options = {
     end,
 }
 
-require("plugins"):add("kevinhwang91/nvim-ufo", {
-    "kevinhwang91/promise-async" })
+
 require("ufo").setup(options)
 -- return {
 --     lazy = false,

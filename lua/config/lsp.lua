@@ -17,6 +17,8 @@ M.lsp = {
     "rust_analyzer",
     "cmake",
     "ts_ls",
+    "gitlab_ci_ls",
+    "buf_ls",
 }
 
 -- M.capabilities = {}

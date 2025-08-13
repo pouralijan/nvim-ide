@@ -1,5 +1,8 @@
-require("plugins"):add("declancm/cinnamon.nvim", {
-    "folke/flash.nvim",
+require("plugins"):add({
+    "declancm/cinnamon.nvim",
+    dependencies = {
+        "folke/flash.nvim",
+    }
 })
 
 local cinnamon = require("cinnamon")

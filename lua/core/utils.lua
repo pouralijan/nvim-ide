@@ -15,7 +15,12 @@ function M:SaveColorScheme(colorscheme)
 end
 
 function M:LoadColorScheme()
-    local file = io.open(vim.fn.stdpath("config") .. "/.colorscheme", "r")
+    local file = io.open(".nvim/colorscheme", "r")
+    -- local file = io.open(vim.fn.stdpath("config") .. "/.colorscheme", "r")
+    if not file then
+        file = io.open(vim.fn.stdpath("config") .. "/.colorscheme", "r")
+    end
+
     if file then
         local colorscheme = file:read("*l")
         file:close()

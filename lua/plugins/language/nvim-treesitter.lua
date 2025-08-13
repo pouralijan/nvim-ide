@@ -31,7 +31,6 @@ local options = {
         "xml",
         "yaml",
     },
-
     sync_install = false,
     additional_vim_regex_highlighting = true,
     highlight = {
@@ -64,5 +63,5 @@ local options = {
     },
 }
 
-require("plugins"):add("nvim-treesitter/nvim-treesitter", { "windwp/nvim-ts-autotag" })
+require("plugins"):add({ "nvim-treesitter/nvim-treesitter", dependencies = { "windwp/nvim-ts-autotag" } })
 require("nvim-treesitter.configs").setup(options)

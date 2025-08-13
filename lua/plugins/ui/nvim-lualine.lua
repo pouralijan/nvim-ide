@@ -129,6 +129,10 @@ local options = {
         "dapui_watches",
         "dapui_console",
         "dap-repl",
+        "Avante",
+        "AvanteTodos",
+        "AvanteInput",
+        "AvanteSelectedFiles",
     },
     ignore_focus = {},
 
@@ -186,7 +190,7 @@ local winbar = {
         {
             "filename",
             file_status = true, -- displays file status (readonly status, modified status)
-            path = 2,  -- 0 = just filename, 1 = relative path, 2 = absolute path},
+            path = 2,           -- 0 = just filename, 1 = relative path, 2 = absolute path},
         },
     },
     lualine_c = {},
@@ -224,7 +228,7 @@ local inactive_winbar = {
         {
             "filename",
             file_status = true, -- displays file status (readonly status, modified status)
-            path = 2,  -- 0 = just filename, 1 = relative path, 2 = absolute path},
+            path = 2,           -- 0 = just filename, 1 = relative path, 2 = absolute path},
         },
     },
     lualine_c = {},
@@ -249,6 +253,8 @@ local myopts = {
     inactive_winbar = inactive_winbar,
 }
 
-require("plugins"):add("nvim-lualine/lualine.nvim",
-    { "nvim-tree/nvim-web-devicons" })
+require("plugins"):add({
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" }
+})
 require("lualine").setup(myopts)

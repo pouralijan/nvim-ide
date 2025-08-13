@@ -13,6 +13,20 @@ autocmd("InsertLeave", {
 })
 
 -- augroup("filetypedetect", { clear = true })
+autocmd({ "BufNewFile", "BufRead" }, {
+    -- group = "filetypedetect",
+    pattern = { ".gitlab-ci.yml", },
+    command = "set filetype=yaml.gitlab",
+})
+
+-- augroup("filetypedetect", { clear = true })
+autocmd({ "BufNewFile", "BufRead" }, {
+    -- group = "filetypedetect",
+    pattern = { "docker-compose.yaml", "docker-compose.yml", "compose.yaml", "compose.yml" },
+    command = "set filetype=yaml.docker-compose",
+})
+
+-- augroup("filetypedetect", { clear = true })
 -- autocmd({ "BufNewFile", "BufRead" }, {
 --     group = "filetypedetect",
 --     pattern = { "docker-compose.yaml", "docker-compose.yml", "compose.yaml", "compose.yml" },

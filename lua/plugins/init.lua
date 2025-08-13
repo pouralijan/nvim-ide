@@ -1,12 +1,36 @@
 local M = {}
 
-function M:add(plugin, dependencies)
+function M:add(plugin)
     local github = "https://github.com/"
-    dependencies = dependencies or {}
+    local dependencies = {}
+    local plugin_name = plugin
+    local version = nil
+
+    if type(plugin) == "table" then
+        dependencies = plugin.dependencies or {}
+        version = plugin.version
+        plugin_name = plugin[1]
+        -- print(plugin_name)
+    end
+    -- for i, dep in ipairs(dependencies) do
+    --     print("dep: " .. i .. dep)
+    -- end
+
+
     local packages = {}
-    table.insert(packages, {src= github .. plugin})
+    table.insert(packages, { src = github .. plugin_name })
+    if version == nil then
+        table.insert(packages, { src = github .. plugin_name })
+    else
+        table.insert(packages, { src = github .. plugin_name, version = version })
+    end
     for _, dep in ipairs(dependencies) do
-        table.insert(packages, {src= github .. dep})
+        -- print("dep: " .. dep)
+        if type(dep) == "table" then
+            M:add(dep)
+        else
+            table.insert(packages, { src = github .. dep })
+        end
     end
     vim.pack.add(packages)
 end
@@ -17,7 +41,7 @@ local plugins_config = {
 }
 function M:loads(plugins_dir)
     plugins_dir = plugins_dir or plugins_config.plugins_dir or
-    vim.fn.stdpath("config") .. "/lua/" .. plugins_config.lua_subpath
+        vim.fn.stdpath("config") .. "/lua/" .. plugins_config.lua_subpath
     local files = vim.fn.readdir(plugins_dir)
     for _, file in ipairs(files) do
         local full_path = plugins_dir .. '/' .. file

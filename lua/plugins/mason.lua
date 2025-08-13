@@ -1,5 +1,9 @@
-require("plugins"):add("mason-org/mason.nvim", {
-    "WhoIsSethDaniel/mason-tool-installer.nvim" })
+require("plugins"):add({
+    "mason-org/mason.nvim",
+    dependencies = {
+        "WhoIsSethDaniel/mason-tool-installer.nvim" }
+}
+)
 
 require("mason").setup({
     ui = {
@@ -41,6 +45,8 @@ local ensure_installed = {
     "vint",
     "yaml-language-server",
     "cmake-language-server",
+    "gitlab-ci-ls",
+    "buf",
 }
 
 require('mason-tool-installer').setup({
