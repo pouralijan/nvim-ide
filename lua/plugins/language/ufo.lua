@@ -3,11 +3,10 @@ require("plugins"):add({
     dependencies = { "kevinhwang91/promise-async" }
 })
 
-vim.o.foldcolumn = "1"
 vim.o.foldlevel = 99
-vim.o.foldlevelstart = 99
+vim.o.foldlevelstart = 2
 vim.o.foldenable = true
--- local options = {}
+
 local ftMap = {
     vim = "indent",
     python = { "lsp", "indent" },
@@ -55,23 +54,3 @@ local options = {
 
 
 require("ufo").setup(options)
--- return {
---     lazy = false,
---     "kevinhwang91/nvim-ufo",
---     dependencies = {
---         "kevinhwang91/promise-async",
---     },
---     opts = {
---         -- open_fold_hl_timeout = 100,
---         fold_virt_text_handler = handler,
---         provider_selector = function(bufnr, filetype, buftype)
---             -- if you prefer treesitter provider rather than lsp,
---             return ftMap[filetype] or { "treesitter", "indent" }
---             -- refer to ./doc/example.lua for detail
---         end,
---     },
---     config = function(_, opts)
---         require("ufo").setup(opts)
---         require("core.keymaps").ufo()
---     end,
--- }
