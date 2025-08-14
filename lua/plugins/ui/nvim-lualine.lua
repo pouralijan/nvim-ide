@@ -1,3 +1,13 @@
+require("plugins"):add({
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons",
+        {
+            "SmiteshP/nvim-navic",
+            dependencies = { "neovim/nvim-lspconfig" }
+        }
+    }
+})
+
 local function flutter_appversion()
     return vim.g.flutter_tools_decorations.app_version
 end
@@ -165,6 +175,10 @@ local sections = {
             "diagnostics",
         },
         { actived_venv, separator = { right = "", left = "" } },
+        {
+            require("micropython_nvim").statusline,
+            cond = package.loaded["micropython_nvim"] and require("micropython_nvim").exists,
+        },
     },
     lualine_c = {},
     lualine_x = {
@@ -184,13 +198,22 @@ local sections = {
     },
     lualine_z = { { "location", separator = { right = "" }, left_padding = 2 } },
 }
+local navic = require("nvim-navic")
 local winbar = {
     lualine_a = { { "hostname", separator = { left = "" }, right_padding = 2 } },
     lualine_b = {
         {
             "filename",
             file_status = true, -- displays file status (readonly status, modified status)
-            path = 2,           -- 0 = just filename, 1 = relative path, 2 = absolute path},
+            path = 1,           -- 0 = just filename, 1 = relative path, 2 = absolute path},
+        },
+        {
+            function()
+                return navic.get_location()
+            end,
+            cond = function()
+                return navic.is_available()
+            end
         },
     },
     lualine_c = {},
@@ -253,8 +276,4 @@ local myopts = {
     inactive_winbar = inactive_winbar,
 }
 
-require("plugins"):add({
-    "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" }
-})
 require("lualine").setup(myopts)
